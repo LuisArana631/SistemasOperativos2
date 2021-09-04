@@ -14,7 +14,7 @@ Modulo programado en lenguaje C que se almacena en el kernel ```/proc``` y que r
 1. Debemos instalar la siguiente librería para poder ejecutar ciertos comandos.
 
     ```
-    $ apt-get install build-essential linux-headers-$(uname-r)
+    $ apt-get install build-essential
     $ sudo apt-get install flex
     $ sudo apt-get install bison
     ```
