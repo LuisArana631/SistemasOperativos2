@@ -46,7 +46,7 @@ Modulo programado en lenguaje C que se almacena en el kernel ```/proc``` y que r
 
     Debe mostrar el mensaje que colocamos en el inicio del modulo.
 
-6. Nos vamos al directorio ```$ cd /proc``` para poder ver el archivo ```memo_sopes1``` el cual al aplicarle el comando cat podemos ver su contenido.
+6. Nos vamos al directorio ```$ cd /proc``` para poder ver el archivo ```mem_grupo23``` el cual al aplicarle el comando cat podemos ver su contenido.
 
 7. Para terminar con un modulo el comando es el siguiente:
 
