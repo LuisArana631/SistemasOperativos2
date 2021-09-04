@@ -79,7 +79,7 @@ static struct file_operations my_fops = {
 static int __init test_init(void)
 {
     struct proc_dir_entry *entry;
-    entry = proc_create("mem_grupo23", 0777, NULL, &my_fops);
+    entry = proc_create("proc_grupo23", 0777, NULL, &my_fops);
     if (!entry)
     {
         return -1;
@@ -94,7 +94,7 @@ static int __init test_init(void)
 /* Metodo a ejecutar al salir del modulo */
 static void __exit test_exit(void)
 {
-    remove_proc_entry("mem_grupo23", NULL);
+    remove_proc_entry("proc_grupo23", NULL);
     printk(KERN_INFO "\n\nSayonara mundo, somos el grupo 23 y este fue el monitor de memoria\n\n");
 }
 
