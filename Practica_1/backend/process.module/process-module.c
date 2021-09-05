@@ -54,12 +54,14 @@ extern struct task_struct init_task;
 /* Obtener procesos info */
 static int my_proc_show(struct seq_file *m, void *v)
 {
-    struct task_struct *task;
+        struct task_struct *task;
+        unsigned long rss;
+        
 		seq_printf(m, "{\"procesos\": [\n");
         for_each_process(task) {
-            get_task_struct(tsk);
-            if (tsk->mm) {
-                rss = get_mm_rss(tsk->mm) << PAGE_SHIFT;
+            get_task_struct(task);
+            if (task->mm) {
+                rss = get_mm_rss(task->mm) << PAGE_SHIFT;
                 seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, rss);
             }
             put_task_struct(tsk);            
