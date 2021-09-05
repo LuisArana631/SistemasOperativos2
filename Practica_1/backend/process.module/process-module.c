@@ -63,6 +63,8 @@ static int my_proc_show(struct seq_file *m, void *v)
             if (task->mm) {
                 rss = get_mm_rss(task->mm) << PAGE_SHIFT;
                 seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, rss);
+            }else{
+                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, 0);
             }
             put_task_struct(task);            
         }
