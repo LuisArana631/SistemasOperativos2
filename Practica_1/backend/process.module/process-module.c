@@ -30,8 +30,19 @@
 #include <linux/smp.h>
 #include <linux/timex.h>
 #include <linux/string.h>
+#include <linux/sched/task.h> 
+#include <linux/sched/signal.h>
 #include <linux/cpufreq.h>
 #include <linux/delay.h>
+
+#ifdef pr_fmt
+#undef pr_fmt
+#endif
+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+
+#ifndef CONFIG_MMU
+    pr_err("No MMU, cannot calculate RSS.\n");
+#endif
 
 #define next_task(p)    list_entry((p)->tasks.next, struct task_struct, tasks)
 
@@ -43,10 +54,19 @@ extern struct task_struct init_task;
 /* Obtener procesos info */
 static int my_proc_show(struct seq_file *m, void *v)
 {
-    struct task_struct *task;
+        struct task_struct *task;
+        unsigned long rss;
+
 		seq_printf(m, "{\"procesos\": [\n");
         for_each_process(task) {
-              seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d},\n",task->comm , task->pid, task->state, task->parent->pid);
+            get_task_struct(task);
+            if (task->mm) {
+                rss = get_mm_rss(task->mm) << PAGE_SHIFT;
+                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, rss);
+            }else{
+                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%d\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, 0);
+            }
+            put_task_struct(task);            
         }
         seq_printf(m, "{\"name\": \"fin\", \"pid\":\"fin\", \"state\":\"fin\", \"father\":\"fin\"}\n");
 		seq_printf(m, "]}");
@@ -86,7 +106,7 @@ static int __init test_init(void)
     }
     else
     {
-        printk(KERN_INFO "\n\nHola mundo, somos el grupo 23 y este es el monitor de memoria\n\n");
+        printk(KERN_INFO "\n\nHola mundo, somos el grupo 23 y este es el monitor de procesos\n\n");
     }
     return 0;
 }
@@ -95,7 +115,7 @@ static int __init test_init(void)
 static void __exit test_exit(void)
 {
     remove_proc_entry("proc_grupo23", NULL);
-    printk(KERN_INFO "\n\nSayonara mundo, somos el grupo 23 y este fue el monitor de memoria\n\n");
+    printk(KERN_INFO "\n\nSayonara mundo, somos el grupo 23 y este fue el monitor de procesos\n\n");
 }
 
 /* Funciones del módulo */

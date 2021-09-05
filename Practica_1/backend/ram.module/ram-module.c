@@ -33,7 +33,7 @@
         porcentaje = (usedRam * 100)/totalRam;
 
         /* Información a mostrar { Total, Usado/Cache, Libre, Shared, Buffer, Porcentaje } */
-        seq_printf(m, "{\"totalRam\":%d,\"usedRam\":%d,\"freeRam\":%d,\"sharedRam\":%d,\"bufferRam\":%d,\"porcentaje\":%d}", totalRam, usedRam, freeRam, sharedRam, bufferRam, porcentaje);
+        seq_printf(m, "{\"totalRam\":%d,\"usedRam\":%d,\"freeRam\":%d,\"sharedRam\":%d,\"bufferRam\":%d,\"porcentajeUsed\":%d}", totalRam, usedRam, freeRam, sharedRam, bufferRam, porcentaje);
 
         return 0;
     }
