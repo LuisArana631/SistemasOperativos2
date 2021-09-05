@@ -7,6 +7,7 @@
 #include <linux/init.h>
 #include <linux/kernel.h>
 #include <linux/sched.h>
+#include <linux/fs_struct.h>
 #include <linux/module.h>
 #include <linux/seq_file.h>
 #include <linux/proc_fs.h>
