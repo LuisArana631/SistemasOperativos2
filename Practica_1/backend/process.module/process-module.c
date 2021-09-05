@@ -64,7 +64,7 @@ static int my_proc_show(struct seq_file *m, void *v)
                 rss = get_mm_rss(task->mm) << PAGE_SHIFT;
                 seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, rss);
             }else{
-                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, 0);
+                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%d\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, 0);
             }
             put_task_struct(task);            
         }
@@ -106,7 +106,7 @@ static int __init test_init(void)
     }
     else
     {
-        printk(KERN_INFO "\n\nHola mundo, somos el grupo 23 y este es el monitor de memoria\n\n");
+        printk(KERN_INFO "\n\nHola mundo, somos el grupo 23 y este es el monitor de procesos\n\n");
     }
     return 0;
 }
@@ -115,7 +115,7 @@ static int __init test_init(void)
 static void __exit test_exit(void)
 {
     remove_proc_entry("proc_grupo23", NULL);
-    printk(KERN_INFO "\n\nSayonara mundo, somos el grupo 23 y este fue el monitor de memoria\n\n");
+    printk(KERN_INFO "\n\nSayonara mundo, somos el grupo 23 y este fue el monitor de procesos\n\n");
 }
 
 /* Funciones del módulo */
