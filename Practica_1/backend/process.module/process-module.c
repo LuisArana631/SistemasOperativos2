@@ -65,9 +65,9 @@ static int my_proc_show(struct seq_file *m, void *v)
             get_task_struct(task);
             if (task->mm) {
                 rss = get_mm_rss(task->mm) << PAGE_SHIFT;
-                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\", \"size\": \"\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, rss, task->fs->count);
+                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\", \"size\": \"%lu\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, rss, task->acct_vm_mem1);
             }else{
-                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%d\", \"size\": \"\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, 0, task->fs->count);
+                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%d\", \"size\": \"%lu\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, 0, task->acct_vm_mem1);
             }
             put_task_struct(task);            
         }
