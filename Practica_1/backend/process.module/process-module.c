@@ -35,10 +35,18 @@
 #include <linux/cpufreq.h>
 #include <linux/delay.h>
 
+#ifdef pr_fmt
+#undef pr_fmt
+#endif
+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+
+#ifndef CONFIG_MMU
+    pr_err("No MMU, cannot calculate RSS.\n");
+#endif
+
 #define next_task(p)    list_entry((p)->tasks.next, struct task_struct, tasks)
 
 extern struct task_struct init_task;
-char *struct2str (struct ap);
 
 #define for_each_process(p) \
         for (p = &init_task ; (p = next_task(p)) != &init_task ; )
@@ -49,35 +57,16 @@ static int my_proc_show(struct seq_file *m, void *v)
     struct task_struct *task;
 		seq_printf(m, "{\"procesos\": [\n");
         for_each_process(task) {
-            seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%s\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, task->mm);
+            get_task_struct(tsk);
+            if (tsk->mm) {
+                rss = get_mm_rss(tsk->mm) << PAGE_SHIFT;
+                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, rss);
+            }
+            put_task_struct(tsk);            
         }
         seq_printf(m, "{\"name\": \"fin\", \"pid\":\"fin\", \"state\":\"fin\", \"father\":\"fin\"}\n");
 		seq_printf(m, "]}");
         return 0;
-}
-
-char *struct2str (struct ap)
-{
-    /* get lenght of string required to hold struct values */
-    size_t len = 0;
-    len = snprintf (NULL, len, "%s,%s,%s,%lf,%lf,%d,%s,%s", ap.gpsId, ap.type, ap.name, ap.latitude,
-                    ap.longitude, ap.elevationFeet, ap.city, ap.countryAbbrv);
-
-    /* allocate/validate string to hold all values (+1 to null-terminate) */
-    char *apstr = calloc (1, sizeof *apstr * len + 1);
-    if (!apstr) {
-        fprintf (stderr, "%s() error: virtual memory allocation failed.\n", __func__);
-    }
-
-    /* write/validate struct values to apstr */
-    if (snprintf (apstr, len + 1, "%s,%s,%s,%lf,%lf,%d,%s,%s", ap.gpsId, ap.type, ap.name, ap.latitude,
-                    ap.longitude, ap.elevationFeet, ap.city, ap.countryAbbrv) > len + 1)
-    {
-        fprintf (stderr, "%s() error: snprintf returned truncated result.\n", __func__);
-        return NULL;
-    }
-
-    return apstr;
 }
 
 /* Escribir proc file */
