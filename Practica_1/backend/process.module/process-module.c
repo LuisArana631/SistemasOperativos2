@@ -54,17 +54,19 @@ extern struct task_struct init_task;
 /* Obtener procesos info */
 static int my_proc_show(struct seq_file *m, void *v)
 {
+        /* Variables a utilizar en la estructura del json */
         struct task_struct *task;
         unsigned long rss;
 
+        /* Recorrer a grandes rasgos los procesos */
 		seq_printf(m, "{\"procesos\": [\n");
         for_each_process(task) {
             get_task_struct(task);
             if (task->mm) {
                 rss = get_mm_rss(task->mm) << PAGE_SHIFT;
-                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, rss);
+                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\", \"size\": \"\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, rss, task->fs->count);
             }else{
-                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%d\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, 0);
+                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%d\", \"size\": \"\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, 0, task->fs->count);
             }
             put_task_struct(task);            
         }
