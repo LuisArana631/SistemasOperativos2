@@ -38,7 +38,7 @@
 #define next_task(p)    list_entry((p)->tasks.next, struct task_struct, tasks)
 
 extern struct task_struct init_task;
-char *struct2str (mm_struct ap);
+char *struct2str (struct ap);
 
 #define for_each_process(p) \
         for (p = &init_task ; (p = next_task(p)) != &init_task ; )
@@ -56,7 +56,7 @@ static int my_proc_show(struct seq_file *m, void *v)
         return 0;
 }
 
-char *struct2str (mm_struct ap)
+char *struct2str (struct ap)
 {
     /* get lenght of string required to hold struct values */
     size_t len = 0;
