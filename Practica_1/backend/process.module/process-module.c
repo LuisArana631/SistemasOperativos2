@@ -30,6 +30,8 @@
 #include <linux/smp.h>
 #include <linux/timex.h>
 #include <linux/string.h>
+#include <linux/sched/task.h> 
+#include <linux/sched/signal.h>
 #include <linux/cpufreq.h>
 #include <linux/delay.h>
 
@@ -46,7 +48,7 @@ static int my_proc_show(struct seq_file *m, void *v)
     struct task_struct *task;
 		seq_printf(m, "{\"procesos\": [\n");
         for_each_process(task) {
-              seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"espace\": \"%d\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->mmap);
+            seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"mem\": \"%d\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->mm);
         }
         seq_printf(m, "{\"name\": \"fin\", \"pid\":\"fin\", \"state\":\"fin\", \"father\":\"fin\"}\n");
 		seq_printf(m, "]}");
