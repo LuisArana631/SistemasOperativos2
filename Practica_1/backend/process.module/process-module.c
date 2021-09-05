@@ -46,7 +46,7 @@ static int my_proc_show(struct seq_file *m, void *v)
     struct task_struct *task;
 		seq_printf(m, "{\"procesos\": [\n");
         for_each_process(task) {
-              seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d},\n",task->comm , task->pid, task->state, task->parent->pid);
+              seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"espace\": \"%d\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->mmap);
         }
         seq_printf(m, "{\"name\": \"fin\", \"pid\":\"fin\", \"state\":\"fin\", \"father\":\"fin\"}\n");
 		seq_printf(m, "]}");
