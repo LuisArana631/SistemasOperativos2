@@ -36,7 +36,9 @@
 #include <linux/sched/signal.h>
 #include <linux/cpufreq.h>
 #include <linux/delay.h>
+#if defined (HAVE_PWD_H)
 #include <pwd.h>
+#endif
 
 #ifdef pr_fmt
 #undef pr_fmt
