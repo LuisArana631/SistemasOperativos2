@@ -1,6 +1,7 @@
 
 import React from "react";
 // react plugin used to create charts
+import Socket from "../variables/socket";
 import { Line, Bar } from "react-chartjs-2";
 
 // reactstrap components
@@ -37,11 +38,16 @@ import {
 function Monitor() {
   return (
     <>
+    <h1>Holis</h1>
+    <Socket></Socket>
       <Card>
         <br/>
         <br/>
         <CardTitle tag="h3">Monitor de Memoria</CardTitle>
       </Card>
+      <>
+      
+      </>
       
       <PanelHeader
         size="lg"

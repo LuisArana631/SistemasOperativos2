@@ -9,6 +9,8 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/rs/cors"
+
 	socketio "github.com/googollee/go-socket.io"
 	"github.com/gorilla/mux"
 )
@@ -62,6 +64,11 @@ func getRAM() (dataRAM string) {
 
 /* Configuración del servidor */
 func main() {
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowCredentials: true,
+	})
+
 	server := socketio.NewServer(nil)
 
 	server.OnConnect("/", func(s socketio.Conn) error {
@@ -76,8 +83,8 @@ func main() {
 
 	go server.Serve()
 	defer server.Close()
-
-	http.Handle("/", server)
+	http.Handle("/", c.Handler(server))
+	//http.Handle("/", server)
 	fmt.Println("Se levanto el servidor en el puerto 5000")
 	log.Fatal(http.ListenAndServe(":5000", nil))
 }
