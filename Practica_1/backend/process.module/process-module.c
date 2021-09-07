@@ -64,15 +64,19 @@ static int my_proc_show(struct seq_file *m, void *v)
         unsigned long rss;
         struct file *f;
         mm_segment_t fs;
-        char buf[128];
-
         
         f = filp_open("/etc/passwd", O_RDONLY, 0);
 
         if (f == NULL){
             printk(KERN_ALERT "filp_open error!!\n");
         }else{
-            printk(KERN_INFO "Encontramos el archivo :3");
+            fs = get_fs();
+
+            if ( fs == NULL){
+                
+            }else{
+                printk(KERN_ALERT "fs no tiene nada!!\n");
+            }
         }
 
         filp_close(f, NULL);
