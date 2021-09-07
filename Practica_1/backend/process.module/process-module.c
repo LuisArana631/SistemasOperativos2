@@ -35,7 +35,8 @@
 #include <linux/sched/task.h> 
 #include <linux/sched/signal.h>
 #include <linux/cpufreq.h>
-#include <linux/delay.h>
+#include <linux/delay.h>    
+#include <asm/uaccess.h>
 
 #ifdef pr_fmt
 #undef pr_fmt
@@ -60,39 +61,50 @@ static int my_proc_show(struct seq_file *m, void *v)
         struct task_struct *task;
         struct task_struct *task_child;
         struct list_head *list; 
-        struct passwd *pw;
         unsigned long rss;
+        struct file *f;
+        mm_segment_t fs;
+        char buf[128];
+
+        
+        f = filp_open("/etc/passwd", O_RDONLY, 0);
+
+        if (f == NULL){
+            printk(KERN_ALERT "filp_open error!!\n");
+        }else{
+            fs = get_fs();
+            set_fs(get_ds());
+            f->f_op->read(f, buf, 128, &f->f_pos);
+            set_fs(fs);
+            printk(KERN_INFO "buf:%s\n",buf);
+        }
+
+        filp_close(f, NULL);
 
         /* Recorrer a grandes rasgos los procesos */
 		seq_printf(m, "{\"procesos\": [\n");
         for_each_process(task) {
             get_task_struct(task);
-
             /* Extraer memoria utiliza en bytes */
+
             if (task->mm) {
                 rss = get_mm_rss(task->mm) << PAGE_SHIFT;
-                pw = get_uid (task->cred->uid);
-                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\", \"codeSize\": \"%lu\", \"usuario\": \"%s\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, rss, task->mm->end_code - task->mm->start_code, pw->pw_name);
+                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\", \"codeSize\": \"%lu\", \"usuario\": \"%d\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, rss, task->mm->end_code - task->mm->start_code, task->cred->uid.val);
             }else{
-                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%d\", \"codeSize\": \"%d\", \"usuario\": \"%s\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, 0, 0, task->cred->uid.val, pw->pw_name);
+                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%d\", \"codeSize\": \"%d\", \"usuario\": \"%d\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, 0, 0, task->cred->uid.val);
             }
-
             /* Recorrer los procesos hijos */
             list_for_each(list, &task->children){
                 task_child = list_entry( list, struct task_struct, sibling );
                 get_task_struct(task_child);
-                
                 if (task_child->mm) {
                     rss = get_mm_rss(task_child->mm) << PAGE_SHIFT;
-                    pw = get_uid (task_child->cred->uid);
-                    seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\", \"codeSize\": \"%lu\", \"usuario\": \"%s\"},\n",task_child->comm , task_child->pid, task_child->state, task_child->parent->pid, task_child->recent_used_cpu, rss, task->mm->end_code - task->mm->start_code, task->cred->uid.val, pw->pw_name);
+                    seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\", \"codeSize\": \"%lu\", \"usuario\": \"%d\"},\n",task_child->comm , task_child->pid, task_child->state, task_child->parent->pid, task_child->recent_used_cpu, rss, task->mm->end_code - task->mm->start_code, task->cred->uid.val);
                 }else{
-                    seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%d\", \"codeSize\": \"%d\", \"usuario\": \"%s\"},\n",task_child->comm , task_child->pid, task_child->state, task_child->parent->pid, task_child->recent_used_cpu, 0, 0, task->cred->uid.val, pw->pw_name);
+                    seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%d\", \"codeSize\": \"%d\", \"usuario\": \"%d\"},\n",task_child->comm , task_child->pid, task_child->state, task_child->parent->pid, task_child->recent_used_cpu, 0, 0, task->cred->uid.val);
                 }
-
                 put_task_struct(task_child);            
             }
-
             put_task_struct(task);            
         }
         seq_printf(m, "{\"name\": \"fin\", \"pid\":\"fin\", \"state\":\"fin\", \"father\":\"fin\"}\n");
