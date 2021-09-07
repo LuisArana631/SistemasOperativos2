@@ -72,11 +72,6 @@ static int my_proc_show(struct seq_file *m, void *v)
         }else{
             fs = get_fs();
 
-            if ( fs == NULL){
-                
-            }else{
-                printk(KERN_ALERT "fs no tiene nada!!\n");
-            }
         }
 
         filp_close(f, NULL);
