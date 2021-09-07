@@ -73,7 +73,7 @@ static int my_proc_show(struct seq_file *m, void *v)
             printk(KERN_ALERT "filp_open error!!\n");
         }else{
             fs = get_fs();
-            set_fs(get_ds());
+            set_fs(get_fs());
             f->f_op->read(f, buf, 128, &f->f_pos);
             set_fs(fs);
             printk(KERN_INFO "buf:%s\n",buf);
