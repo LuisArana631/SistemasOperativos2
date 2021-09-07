@@ -72,11 +72,7 @@ static int my_proc_show(struct seq_file *m, void *v)
         if (f == NULL){
             printk(KERN_ALERT "filp_open error!!\n");
         }else{
-            fs = get_fs();
-            set_fs(get_fs());
-            f->f_op->read(f, buf, 128, &f->f_pos);
-            set_fs(fs);
-            printk(KERN_INFO "buf:%s\n",buf);
+            printk(KERN_INFO "Encontramos el archivo :3");
         }
 
         filp_close(f, NULL);
