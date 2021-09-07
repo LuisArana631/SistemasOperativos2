@@ -63,15 +63,15 @@ static int my_proc_show(struct seq_file *m, void *v)
         struct list_head *list; 
         unsigned long rss;
         struct file *f;
-        mm_segment_t fs;
+        char chr = 0;
         
         f = filp_open("/etc/passwd", O_RDONLY, 0);
 
         if (f == NULL){
             printk(KERN_ALERT "filp_open error!!\n");
         }else{
-            fs = get_fs();
-
+            f->f_op->read(f, &chr, 1, &f->f_pos);
+            printk(KERN_ALERT "char: %c\n", chr);
         }
 
         filp_close(f, NULL);
