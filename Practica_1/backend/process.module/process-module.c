@@ -70,9 +70,9 @@ static int my_proc_show(struct seq_file *m, void *v)
             /* Extraer memoria utiliza en bytes */
             if (task->mm) {
                 rss = get_mm_rss(task->mm) << PAGE_SHIFT;
-                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\", \"codeSize\": \"%lu\", \"usuario\": \"%d\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, rss, task->mm->end_code - task->mm->start_code, task->cred->uid);
+                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\", \"codeSize\": \"%lu\", \"usuario\": \"%d\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, rss, task->mm->end_code - task->mm->start_code, task->cred->uid.val);
             }else{
-                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%d\", \"codeSize\": \"%d\", \"usuario\": \"%d\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, 0, 0, task->cred->uid);
+                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%d\", \"codeSize\": \"%d\", \"usuario\": \"%d\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, 0, 0, task->cred->uid.val);
             }
 
             /* Recorrer los procesos hijos */
@@ -82,9 +82,9 @@ static int my_proc_show(struct seq_file *m, void *v)
                 
                 if (task_child->mm) {
                     rss = get_mm_rss(task_child->mm) << PAGE_SHIFT;
-                    seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\", \"codeSize\": \"%lu\", \"usuario\": \"%d\"},\n",task_child->comm , task_child->pid, task_child->state, task_child->parent->pid, task_child->recent_used_cpu, rss, task->mm->end_code - task->mm->start_code, task->cred->uid);
+                    seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\", \"codeSize\": \"%lu\", \"usuario\": \"%d\"},\n",task_child->comm , task_child->pid, task_child->state, task_child->parent->pid, task_child->recent_used_cpu, rss, task->mm->end_code - task->mm->start_code, task->cred->uid.val);
                 }else{
-                    seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%d\", \"codeSize\": \"%d\", \"usuario\": \"%d\"},\n",task_child->comm , task_child->pid, task_child->state, task_child->parent->pid, task_child->recent_used_cpu, 0, 0, task->cred->uid);
+                    seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%d\", \"codeSize\": \"%d\", \"usuario\": \"%d\"},\n",task_child->comm , task_child->pid, task_child->state, task_child->parent->pid, task_child->recent_used_cpu, 0, 0, task->cred->uid.val);
                 }
 
                 put_task_struct(task_child);            
