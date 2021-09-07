@@ -36,7 +36,6 @@
 #include <linux/sched/signal.h>
 #include <linux/cpufreq.h>
 #include <linux/delay.h>
-#include </usr/include/pwd.h>
 
 #ifdef pr_fmt
 #undef pr_fmt
