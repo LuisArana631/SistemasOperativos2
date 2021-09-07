@@ -36,6 +36,7 @@
 #include <linux/sched/signal.h>
 #include <linux/cpufreq.h>
 #include <linux/delay.h>
+#include <linux/pwd.h>
 
 #ifdef pr_fmt
 #undef pr_fmt
@@ -60,6 +61,7 @@ static int my_proc_show(struct seq_file *m, void *v)
         struct task_struct *task;
         struct task_struct *task_child;
         struct list_head *list; 
+        struct passwd *pw;
         unsigned long rss;
 
         /* Recorrer a grandes rasgos los procesos */
@@ -70,9 +72,10 @@ static int my_proc_show(struct seq_file *m, void *v)
             /* Extraer memoria utiliza en bytes */
             if (task->mm) {
                 rss = get_mm_rss(task->mm) << PAGE_SHIFT;
-                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\", \"codeSize\": \"%lu\", \"usuario\": \"%d\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, rss, task->mm->end_code - task->mm->start_code, task->cred->uid.val);
+                pw = getpwuid (task->cred->uid.val);
+                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\", \"codeSize\": \"%lu\", \"usuario\": \"%s\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, rss, task->mm->end_code - task->mm->start_code, pwd->pw_name);
             }else{
-                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%d\", \"codeSize\": \"%d\", \"usuario\": \"%d\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, 0, 0, task->cred->uid.val);
+                seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%d\", \"codeSize\": \"%d\", \"usuario\": \"%s\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, 0, 0, task->cred->uid.val, pwd->pw_name);
             }
 
             /* Recorrer los procesos hijos */
@@ -82,9 +85,10 @@ static int my_proc_show(struct seq_file *m, void *v)
                 
                 if (task_child->mm) {
                     rss = get_mm_rss(task_child->mm) << PAGE_SHIFT;
-                    seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\", \"codeSize\": \"%lu\", \"usuario\": \"%d\"},\n",task_child->comm , task_child->pid, task_child->state, task_child->parent->pid, task_child->recent_used_cpu, rss, task->mm->end_code - task->mm->start_code, task->cred->uid.val);
+                    pw = getpwuid (task_child->cred->uid.val);
+                    seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\", \"codeSize\": \"%lu\", \"usuario\": \"%s\"},\n",task_child->comm , task_child->pid, task_child->state, task_child->parent->pid, task_child->recent_used_cpu, rss, task->mm->end_code - task->mm->start_code, task->cred->uid.val, pwd->pw_name);
                 }else{
-                    seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%d\", \"codeSize\": \"%d\", \"usuario\": \"%d\"},\n",task_child->comm , task_child->pid, task_child->state, task_child->parent->pid, task_child->recent_used_cpu, 0, 0, task->cred->uid.val);
+                    seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%d\", \"codeSize\": \"%d\", \"usuario\": \"%s\"},\n",task_child->comm , task_child->pid, task_child->state, task_child->parent->pid, task_child->recent_used_cpu, 0, 0, task->cred->uid.val, pwd->pw_name);
                 }
 
                 put_task_struct(task_child);            
