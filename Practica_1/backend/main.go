@@ -2,14 +2,13 @@ package main
 
 import (
 	"encoding/json"
-	"fmt" // Ayuda a escribir en la respuesta
-	"io/ioutil"
-	"log" //Loguear si algo sale mal
+	"fmt"       // Ayuda a escribir en la respuesta
+	"io/ioutil" //Loguear si algo sale mal
+	"log"
 	"net/http"
 	"os"
 	"strconv"
 
-	socketio "github.com/googollee/go-socket.io"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
@@ -61,57 +60,57 @@ func getRAM() (dataRAM string) {
 	return string(data)
 }
 
-func homePage(w http.ResponseWriter, r *http.Request) {
-	var respuesta2 Message
-	(w).Header().Set("Access-Control-Allow-Origin", "*")
-	(w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	(w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+/* LECTURA DE PROCESOS */
+func getProcesos() (dataRAM string) {
+	data, err := ioutil.ReadFile("/proc/proc_grupo23")
+	if err != nil {
+		fmt.Println("Error al leer el archivo: ", err)
+		return ""
+	}
+	return string(data)
+}
 
-	fmt.Fprintf(w, "Conectado")
-	fmt.Println("Estamos en el /")
-
-	respuesta2 = Message{
-		Body:   "Comando ejecutado",
+/* Endpoint para enviar RAM */
+func send_ram(res http.ResponseWriter, req *http.Request) {
+	var respuesta Message
+	ram_info := getRAM()
+	respuesta = Message{
+		Body:   ram_info,
 		Status: 200,
 	}
-	json.NewEncoder(w).Encode(respuesta2)
+	json.NewEncoder(res).Encode(respuesta)
+}
+
+/* Endpoint para enviar Procesos */
+func send_proc(res http.ResponseWriter, req *http.Request) {
+	var respuesta Message
+	proc_info := getProcesos()
+	respuesta = Message{
+		Body:   proc_info,
+		Status: 200,
+	}
+	json.NewEncoder(res).Encode(respuesta)
+}
+
+func home(wri http.ResponseWriter, req *http.Request) {
+	fmt.Fprint(wri, "Home Page")
 }
 
 /* Configuración del servidor */
 func main() {
+	fmt.Println("Inicio de server en puerto 8080")
+	router := mux.NewRouter().StrictSlash(true)
 
-	/*http.HandleFunc("/", homePage)
-	direccion := ":5000"
-	fmt.Println("Servidor listo escuchando en " + direccion)
-	log.Fatal(http.ListenAndServe(direccion, nil))*/
+	router.HandleFunc("/", home).Methods("GET")
+	router.HandleFunc("/ram", send_ram).Methods("GET")
+	router.HandleFunc("/proc", send_proc).Methods("GET")
+	router.HandleFunc("/kill/{id}", kill_process).Methods("GET")
 
-	fmt.Println("hola!")
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowCredentials: true,
 	})
 
-	server := socketio.NewServer(nil)
-
-	server.OnConnect("connection", func(s socketio.Conn) error {
-		//s.SetContext("")
-		//fmt.Println("conectado: ", s.ID())
-		//return nil
-		log.Println("New Connection")
-		return nil
-	})
-
-	http.Handle("/socket.io/", c.Handler(server))
-	log.Fatal(http.ListenAndServe(":5000", nil))
-
-	/*server.OnDisconnect("/", func(s socketio.Conn, reason string) {
-		fmt.Println("desconectado: ", reason)
-	})
-
-	go server.Serve()
-	defer server.Close()
-	http.Handle("/", c.Handler(server))
-	//http.Handle("/", server)
-	fmt.Println("Se levanto el servidor en el puerto 5000")
-	log.Fatal(http.ListenAndServe(":5000", nil))*/
+	handler := c.Handler(router)
+	log.Fatal(http.ListenAndServe(":8080", handler))
 }
