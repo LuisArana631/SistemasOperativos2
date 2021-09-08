@@ -9,7 +9,9 @@ import (
 	"os"
 	"strconv"
 
+	socketio "github.com/googollee/go-socket.io"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 /* Struct de Respuestas del servidor para el front */
@@ -78,24 +80,31 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 /* Configuración del servidor */
 func main() {
 
-	http.HandleFunc("/", homePage)
+	/*http.HandleFunc("/", homePage)
 	direccion := ":5000"
 	fmt.Println("Servidor listo escuchando en " + direccion)
-	log.Fatal(http.ListenAndServe(direccion, nil))
-	/*c := cors.New(cors.Options{
+	log.Fatal(http.ListenAndServe(direccion, nil))*/
+
+	fmt.Println("hola!")
+	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowCredentials: true,
 	})
 
 	server := socketio.NewServer(nil)
 
-	server.OnConnect("/conectar", func(s socketio.Conn) error {
-		s.SetContext("")
-		fmt.Println("conectado: ", s.ID())
+	server.OnConnect("connection", func(s socketio.Conn) error {
+		//s.SetContext("")
+		//fmt.Println("conectado: ", s.ID())
+		//return nil
+		log.Println("New Connection")
 		return nil
 	})
 
-	server.OnDisconnect("/", func(s socketio.Conn, reason string) {
+	http.Handle("/socket.io/", c.Handler(server))
+	log.Fatal(http.ListenAndServe(":5000", nil))
+
+	/*server.OnDisconnect("/", func(s socketio.Conn, reason string) {
 		fmt.Println("desconectado: ", reason)
 	})
 
