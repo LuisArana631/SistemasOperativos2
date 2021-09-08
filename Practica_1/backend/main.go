@@ -73,17 +73,24 @@ func getProcesos() (dataRAM string) {
 /* Endpoint para enviar RAM */
 func send_ram(res http.ResponseWriter, req *http.Request) {
 	ram_info := getRAM()
+	var result map[string]interface{}
+	json.Unmarshal([]byte(ram_info), &result)
 	json.NewEncoder(res).Encode(ram_info)
 }
 
 /* Endpoint para enviar Procesos */
 func send_proc(res http.ResponseWriter, req *http.Request) {
 	proc_info := getProcesos()
+	var result map[string]interface{}
+	json.Unmarshal([]byte(proc_info), &result)
 	json.NewEncoder(res).Encode(proc_info)
 }
 
 func home(wri http.ResponseWriter, req *http.Request) {
-	fmt.Fprint(wri, "Home Page")
+	string_home := "{ \"saludo\": \"HOME\" }"
+	var result map[string]interface{}
+	json.Unmarshal([]byte(string_home), &result)
+	json.NewEncoder(wri).Encode(result)
 }
 
 /* Configuración del servidor */
