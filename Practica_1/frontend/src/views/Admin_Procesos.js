@@ -11,7 +11,6 @@ import {
 
 // core components
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
-import { thead, tbody } from "variables/general";
 import { get_proc } from 'services/services.js'
 
 function Admin_Procesos() {
@@ -32,7 +31,6 @@ function Admin_Procesos() {
                   <thead className="text-primary">
                     <tr>
                       <th> <b>PID</b></th>
-                      <th> <b>PID Padre</b></th>
                       <th> <b>Nombre del proceso</b></th>
                       <th> <b>Estado</b></th>
                       <th> <b>%RAM</b></th>
@@ -47,12 +45,11 @@ function Admin_Procesos() {
                       return (
                         <tr>
                           <td>{row.pid}</td>
-                          <td>{row.father}</td>
                           <td>{row.name}</td>
                           <td>{row.state}</td>
-                          <td>{row.usedRAM}%</td>
-                          <td>{row.usedCpu}%</td>
-                          <td>{row.codeSize} mb</td>
+                          <td>{row.usedRAM}</td>
+                          <td>{row.usedCpu}</td>
+                          <td>{row.codeSize}</td>
                           <td>{row.usuario}</td>
                         </tr>
                       );
@@ -73,36 +70,23 @@ export default Admin_Procesos;
 function get_process_data(process_array){
   let array_return = [];
     
-  if (process_array.procesos != undefined) {
+  if (process_array != undefined) {
     Array.from(process_array.procesos).map(row =>  {
         let estado_string = row.state == 0 ? "running" : row.state == 1 ? "stopped" : "zombie" ;
 
         array_return.push({
-          "codeSize": parseFloat(parseInt(row.codeSize)/1000000).toFixed(2),
+          "codeSize": row.codeSize,
           "father": row.father,
           "name": row.name,
           "pid": row.pid,
           "state": estado_string,
-          "usedCpu": parseFloat(row.usedCpu).toFixed(1),
-          "usedRAM": parseFloat((parseInt(row.usedRAM)/1000000)*100/978).toFixed(2),
+          "usedCpu": row.usedCpu,
+          "usedRAM": row.usedRAM,
           "usuario": row.usuario
       })
       }      
     );
-  }    
-
-  array_return.sort(GetSortOrder("pid"));
+  }  
 
   return array_return;
 }
-
-function GetSortOrder(prop) {    
-  return function(a, b) {    
-      if (a[prop] > b[prop]) {    
-          return 1;    
-      } else if (a[prop] < b[prop]) {    
-          return -1;    
-      }    
-      return 0;    
-  }    
-} 

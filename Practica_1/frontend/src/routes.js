@@ -1,5 +1,4 @@
 import Monitor from "views/Monitor.js";
-import Arbol_Procesos from "views/Arbol_Procesos.js";
 import Admin_Procesos from "views/Admin_Procesos.js";
 
 var dashRoutes = [
@@ -15,13 +14,6 @@ var dashRoutes = [
     name: "Administrador de Procesos",
     icon: "files_paper",
     component: Admin_Procesos,
-    layout: "/admin",
-  },
-  {
-    path: "/arbol-procesos",
-    name: "Arbol de Procesos",
-    icon: "design-2_ruler-pencil",
-    component: Arbol_Procesos,
     layout: "/admin",
   }
 ];

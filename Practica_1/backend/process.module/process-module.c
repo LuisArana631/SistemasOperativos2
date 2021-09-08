@@ -57,6 +57,8 @@ static int my_proc_show(struct seq_file *m, void *v)
 {
         /* Variables a utilizar en la estructura del json */
         struct task_struct *task;
+        struct task_struct *task_child;
+        struct list_head *list; 
         unsigned long rss;
 
         /* Recorrer a grandes rasgos los procesos */
@@ -70,6 +72,21 @@ static int my_proc_show(struct seq_file *m, void *v)
                 seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\", \"codeSize\": \"%lu\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, rss, task->mm->end_code - task->mm->start_code);
             }else{
                 seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%d\", \"codeSize\": \"%d\"},\n",task->comm , task->pid, task->state, task->parent->pid, task->recent_used_cpu, 0, 0);
+            }
+
+            /* Recorrer los procesos hijos */
+            list_for_each(list, &task->children){
+                task_child = list_entry( list, struct task_struct, sibling );
+                get_task_struct(task_child);
+                
+                if (task_child->mm) {
+                    rss = get_mm_rss(task_child->mm) << PAGE_SHIFT;
+                    seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%lu\", \"codeSize\": \"%lu\"},\n",task_child->comm , task_child->pid, task_child->state, task_child->parent->pid, task_child->recent_used_cpu, rss, task->mm->end_code - task->mm->start_code);
+                }else{
+                    seq_printf(m, "{\"name\": \"%s\", \"pid\":%d, \"state\":%lu, \"father\":%d, \"usedCpu\": \"%d\", \"usedRAM\": \"%d\", \"codeSize\": \"%d\"},\n",task_child->comm , task_child->pid, task_child->state, task_child->parent->pid, task_child->recent_used_cpu, 0, 0);
+                }
+
+                put_task_struct(task_child);            
             }
 
             put_task_struct(task);            
