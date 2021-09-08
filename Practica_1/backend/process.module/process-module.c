@@ -63,16 +63,13 @@ static int my_proc_show(struct seq_file *m, void *v)
         struct list_head *list; 
         unsigned long rss;
         struct file *f;
-        mm_segment_t oldfs= {0};
         
         f = filp_open("/etc/passwd", O_RDONLY, 0);
 
         if (f == NULL){
             printk(KERN_ALERT "filp_open error!!\n");
         }else{
-            oldfs = get_fs();
-			set_fs(get_ds());
-            set_fs(oldfs);
+            
         }
 
         filp_close(f, NULL);
