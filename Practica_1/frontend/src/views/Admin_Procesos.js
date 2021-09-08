@@ -53,7 +53,7 @@ function Admin_Procesos() {
                           <td>{row.usedCpu}%</td>
                           <td>{row.codeSize}mb</td>
                           <td>{row.usuario}</td>
-                          <td><button type="button" class="btn btn-outline-danger mr-1">KILL</button></td>
+                          <td><button type="button" class="btn btn-outline-danger mr-1" onClick={() => { kill_proc(row.pid) }}>KILL</button></td>
                         </tr>
                       );
                     })}
@@ -71,7 +71,9 @@ function Admin_Procesos() {
 export default Admin_Procesos;
 
 function kill_proc(pid){
-  
+  fetch(`http://3.14.79.8:8080/kill/${pid}`)
+  .then(response => response.json())
+  .then(data => console.log(data));
 }
 
 function get_process_data(process_array){
