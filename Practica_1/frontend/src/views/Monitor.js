@@ -12,12 +12,12 @@ import {
   DropdownToggle,
   Table
 } from "reactstrap";
-
+import PanelHeader from "components/PanelHeader/PanelHeader.js";
 //** Grafica */
 // General configuration for the charts with Line gradientStroke
-const arrval=[];
+var arrval=[];
 var cont=0;
-const arrlabels=[];
+var arrlabels=[];
 const chartColor = "#FFFFFF";
 const options = {
   maintainAspectRatio: false,
@@ -113,7 +113,6 @@ const dashboard= {
   options: options,
 };
 
-
 function Monitor() {
 
     let datos = get_ram();
@@ -130,9 +129,9 @@ function Monitor() {
 
     return(      
       <>
+      
       <Card>
-        <br/>
-        <br/>
+        <PanelHeader size="sm" />
         <CardTitle tag="h3">Monitor de Memoria</CardTitle>
       </Card>
       
@@ -146,7 +145,6 @@ function Monitor() {
                   <DropdownToggle
                     className="btn-round btn-outline-default btn-icon"
                     color="default"
-                    
                   >
                     <i className="now-ui-icons loader_refresh" />
                   </DropdownToggle>
