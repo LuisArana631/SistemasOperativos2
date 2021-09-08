@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Line, Bar } from "react-chartjs-2";
-import socket from "../variables/socket"
+//import socket from "../variables/socket"
+import io from "socket.io-client";
+
+let socket = io('//localhost:5000/socket.io');
 // reactstrap components
 import {
   Card,
@@ -27,9 +30,7 @@ import PanelHeader from "components/PanelHeader/PanelHeader.js";
 
 import {
   dashboardPanelChart,
-  dashboardShippedProductsChart,
   dashboardAllProductsChart,
-  dashboard24HoursPerformanceChart,
 } from "variables/charts.js";
 
 function Monitor() {
@@ -37,7 +38,8 @@ function Monitor() {
   const [comentarios, setComentarios] = useState([]);
 
   useEffect(() => {
-    socket.on('Comentarios', comentarios => {
+    socket.on('/', comentarios => {
+      console.log(comentarios);
       setComentarios(comentarios)
     });
 
@@ -47,7 +49,7 @@ function Monitor() {
     return(
       
       <>
-    
+      <p>{comentarios}</p>
       <Card>
         <br/>
         <br/>
