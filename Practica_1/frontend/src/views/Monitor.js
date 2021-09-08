@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Line, Bar } from "react-chartjs-2";
-import socket from "../variables/socket"
-//import io from "socket.io-client";
+import { get_ram } from 'services/services.js'
 
-//let socket = io('//localhost:5000/socket.io');
-// reactstrap components
 import {
   Card,
   CardHeader,
@@ -34,21 +31,10 @@ import {
 } from "variables/charts.js";
 
 function Monitor() {
-  
-  const [comentarios, setComentarios] = useState([]);
 
-  useEffect(() => {
-    socket.on('/', comentarios => {
-      setComentarios(comentarios)
-    });
-
-
-  }, [comentarios])
- 
-    return(
-      
+    return(      
       <>
-      <p>Comentarios: {comentarios}</p>
+      <p>RAM: {get_ram()}</p>
       <Card>
         <br/>
         <br/>
