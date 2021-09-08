@@ -1,9 +1,8 @@
-
-import React from "react";
-// react plugin used to create charts
+import React, { Component, useEffect } from 'react';
+import axios from 'axios';
 import Socket from "../variables/socket";
 import { Line, Bar } from "react-chartjs-2";
-
+import ReactDOM from 'react-dom';
 // reactstrap components
 import {
   Card,
@@ -35,11 +34,64 @@ import {
   dashboard24HoursPerformanceChart,
 } from "variables/charts.js";
 
-function Monitor() {
-  return (
-    <>
-    <h1>Holis</h1>
-    <Socket></Socket>
+var timer = null;
+class Monitor extends Component{
+  constructor() {
+    super();
+    this.state = { data: [] };
+  }
+
+  resolveAfter2Seconds() {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve('resolved');
+      }, 200);
+    });
+  }
+
+  
+
+  async asyncCall() {
+    console.log('calling');
+    const result = await this.resolveAfter2Seconds();
+    await axios.post('http://localhost:5000/')
+      .then((Response) => {
+        console.log("get url exito, datos ")
+        console.log(Response);
+        
+      })
+      .catch((error) => {
+        console.log("error al llamar url")
+      })
+    console.log(result);
+    // expected output: "resolved"
+  }
+
+  
+  
+  
+  componentDidMount() {
+    timer = setTimeout(() => console.log('Hello, World!'), 3000)
+  }
+
+  componentWillUnmount() {
+    clearTimeout(timer);
+  }
+  
+  /*componentDidMount() {
+    // hacer un hilo que llame al get process
+    fetch("http://localhost:5000/")
+    .then(res => res.json)
+    .then(console.log("res"))
+    .then(json => this.setState({ data: json }));
+  }*/
+
+
+  render(){
+    this.asyncCall();
+    return(
+      
+      <>
       <Card>
         <br/>
         <br/>
@@ -139,7 +191,9 @@ function Monitor() {
             </Card>
       </div>
     </>
-  );
+    );
+  }
 }
 
 export default Monitor;
+

@@ -2,16 +2,13 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	"fmt" // Ayuda a escribir en la respuesta
 	"io/ioutil"
-	"log"
+	"log" //Loguear si algo sale mal
 	"net/http"
 	"os"
 	"strconv"
 
-	"github.com/rs/cors"
-
-	socketio "github.com/googollee/go-socket.io"
 	"github.com/gorilla/mux"
 )
 
@@ -62,16 +59,37 @@ func getRAM() (dataRAM string) {
 	return string(data)
 }
 
+func homePage(w http.ResponseWriter, r *http.Request) {
+	var respuesta2 Message
+	(w).Header().Set("Access-Control-Allow-Origin", "*")
+	(w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	(w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+
+	fmt.Fprintf(w, "Conectado")
+	fmt.Println("Estamos en el /")
+
+	respuesta2 = Message{
+		Body:   "Comando ejecutado",
+		Status: 200,
+	}
+	json.NewEncoder(w).Encode(respuesta2)
+}
+
 /* Configuración del servidor */
 func main() {
-	c := cors.New(cors.Options{
+
+	http.HandleFunc("/", homePage)
+	direccion := ":5000"
+	fmt.Println("Servidor listo escuchando en " + direccion)
+	log.Fatal(http.ListenAndServe(direccion, nil))
+	/*c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowCredentials: true,
 	})
 
 	server := socketio.NewServer(nil)
 
-	server.OnConnect("/", func(s socketio.Conn) error {
+	server.OnConnect("/conectar", func(s socketio.Conn) error {
 		s.SetContext("")
 		fmt.Println("conectado: ", s.ID())
 		return nil
@@ -86,5 +104,5 @@ func main() {
 	http.Handle("/", c.Handler(server))
 	//http.Handle("/", server)
 	fmt.Println("Se levanto el servidor en el puerto 5000")
-	log.Fatal(http.ListenAndServe(":5000", nil))
+	log.Fatal(http.ListenAndServe(":5000", nil))*/
 }
