@@ -57,8 +57,6 @@ static int my_proc_show(struct seq_file *m, void *v)
 {
         /* Variables a utilizar en la estructura del json */
         struct task_struct *task;
-        struct task_struct *task_child;
-        struct list_head *list; 
         unsigned long rss;
 
         /* Recorrer a grandes rasgos los procesos */
