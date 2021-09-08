@@ -19,6 +19,15 @@ type Message struct {
 	Status int    `json:"status"`
 }
 
+type RAM struct {
+	TotalRam   string `json:"totalRam"`
+	UsedRam    string `json:"usedRam"`
+	FreeRAM    string `json:"freeRam"`
+	SharedRAM  string `json:"sharedRam"`
+	BufferRAM  string `json:"bufferRam"`
+	Porcentaje string `json:"porcentajeUsed"`
+}
+
 /* Función para terminar procesos */
 func kill_process(res http.ResponseWriter, req *http.Request) {
 	var respuesta Message
@@ -73,7 +82,11 @@ func getProcesos() (dataRAM string) {
 /* Endpoint para enviar RAM */
 func send_ram(res http.ResponseWriter, req *http.Request) {
 	ram_info := getRAM()
-	json.NewEncoder(res).Encode(ram_info)
+
+	var ram RAM
+	json.Unmarshal([]byte(ram_info), &ram)
+
+	json.NewEncoder(res).Encode(ram)
 }
 
 /* Endpoint para enviar Procesos */
