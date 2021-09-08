@@ -2,15 +2,15 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
-	"io/ioutil"
+	"fmt"       // Ayuda a escribir en la respuesta
+	"io/ioutil" //Loguear si algo sale mal
 	"log"
 	"net/http"
 	"os"
 	"strconv"
 
-	socketio "github.com/googollee/go-socket.io"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 /* Struct de Respuestas del servidor para el front */
@@ -60,24 +60,54 @@ func getRAM() (dataRAM string) {
 	return string(data)
 }
 
+/* LECTURA DE PROCESOS */
+func getProcesos() (dataRAM string) {
+	data, err := ioutil.ReadFile("/proc/proc_grupo23")
+	if err != nil {
+		fmt.Println("Error al leer el archivo: ", err)
+		return ""
+	}
+	return string(data)
+}
+
+/* Endpoint para enviar RAM */
+func send_ram(res http.ResponseWriter, req *http.Request) {
+	ram_info := "{\"bufferRam\":55,\"freeRam\":168,\"porcentajeUsed\":77,\"sharedRam\":0,\"totalRam\":978,\"usedRam\":755}"
+	var result map[string]interface{}
+	json.Unmarshal([]byte(ram_info), &result)
+	json.NewEncoder(res).Encode(ram_info)
+}
+
+/* Endpoint para enviar Procesos */
+func send_proc(res http.ResponseWriter, req *http.Request) {
+	proc_info := getProcesos()
+	var result map[string]interface{}
+	json.Unmarshal([]byte(proc_info), &result)
+	json.NewEncoder(res).Encode(result)
+}
+
+func home(wri http.ResponseWriter, req *http.Request) {
+	string_home := "{ \"saludo\": \"HOME\" }"
+	var result map[string]interface{}
+	json.Unmarshal([]byte(string_home), &result)
+	json.NewEncoder(wri).Encode(result)
+}
+
 /* Configuración del servidor */
 func main() {
-	server := socketio.NewServer(nil)
+	fmt.Println("Inicio de server en puerto 8080")
+	router := mux.NewRouter().StrictSlash(true)
 
-	server.OnConnect("/", func(s socketio.Conn) error {
-		s.SetContext("")
-		fmt.Println("conectado: ", s.ID())
-		return nil
+	router.HandleFunc("/", home).Methods("GET")
+	router.HandleFunc("/ram", send_ram).Methods("GET")
+	router.HandleFunc("/proc", send_proc).Methods("GET")
+	router.HandleFunc("/kill/{id}", kill_process).Methods("GET")
+
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowCredentials: true,
 	})
 
-	server.OnDisconnect("/", func(s socketio.Conn, reason string) {
-		fmt.Println("desconectado: ", reason)
-	})
-
-	go server.Serve()
-	defer server.Close()
-
-	http.Handle("/", server)
-	fmt.Println("Se levanto el servidor en el puerto 5000")
-	log.Fatal(http.ListenAndServe(":5000", nil))
+	handler := c.Handler(router)
+	log.Fatal(http.ListenAndServe(":8080", handler))
 }
