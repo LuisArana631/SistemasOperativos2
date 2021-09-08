@@ -28,15 +28,12 @@ function Admin_Procesos() {
                 <Table responsive>
                   <thead className="text-primary">
                     <tr>
-                      {thead.map((prop, key) => {
-                        if (key === thead.length - 1)
-                          return (
-                            <th key={key} className="text-right">
-                              {prop}
-                            </th>
-                          );
-                        return <th key={key}>{prop}</th>;
-                      })}
+                      <th>Total de Procesos en ejecución</th>
+                      <th>Total de Procesos suspendidos</th>
+                      <th>Total de Procesos en ejecución</th>
+                      <th>Total de Procesos detenidos</th>
+                      <th>Total de Procesos zombies</th>
+                      <th>Total de Procesos</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -60,25 +57,20 @@ function Admin_Procesos() {
               </CardBody>
             </Card>
           </Col>
-          <Col xs={12}>
-            <Card className="card-plain">
+          <Card>
               <CardHeader>
-                <CardTitle tag="h4">Informacion General de Procesos</CardTitle>
-                <p className="category"> Procesos que están siendo ejecutados en el servidor</p>
+                <CardTitle tag="h4">Arbol de Procesos</CardTitle>
               </CardHeader>
               <CardBody>
                 <Table responsive>
                   <thead className="text-primary">
                     <tr>
-                      {thead.map((prop, key) => {
-                        if (key === thead.length - 1)
-                          return (
-                            <th key={key} className="text-right">
-                              {prop}
-                            </th>
-                          );
-                        return <th key={key}>{prop}</th>;
-                      })}
+                      <th>PID</th>
+                      <th>Nombre del proceso</th>
+                      <th>Estado</th>
+                      <th>%RAM</th>
+                      <th>Task Codesize</th>
+                      <th>Usuario</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -101,7 +93,7 @@ function Admin_Procesos() {
                 </Table>
               </CardBody>
             </Card>
-          </Col>
+          
         </Row>
       </div>
     </>
