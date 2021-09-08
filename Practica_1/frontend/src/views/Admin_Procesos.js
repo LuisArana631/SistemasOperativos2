@@ -35,23 +35,23 @@ function Admin_Procesos() {
                       <th> <b>Nombre del proceso</b></th>
                       <th> <b>Estado</b></th>
                       <th> <b>%RAM</b></th>
+                      <th> <b>%CPU</b></th>
                       <th> <b>Task Codesize</b></th>
                       <th> <b>Usuario</b></th>
+                      <th> <b>KILL</b></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {tbody.map((prop, key) => {
+                    {process_data.map(row => {
                       return (
-                        <tr key={key}>
-                          {prop.data.map((prop, key) => {
-                            if (key === thead.length - 1)
-                              return (
-                                <td key={key} className="text-right">
-                                  {prop}
-                                </td>
-                              );
-                            return <td key={key}>{prop}</td>;
-                          })}
+                        <tr>
+                          <td>{row.pid}</td>
+                          <td>{row.name}</td>
+                          <td>{row.state}</td>
+                          <td>{row.usedRAM}</td>
+                          <td>{row.usedCpu}</td>
+                          <td>{row.codeSize}</td>
+                          <td>{row.usuario}</td>
                         </tr>
                       );
                     })}
@@ -70,12 +70,21 @@ export default Admin_Procesos;
 
 function get_process_data(process_array){
   let array_return = [];
-
+    
   if (process_array != undefined) {
-    Array.from(process_array).map(row =>  {
+    Array.from(process_array.procesos).map(row =>  {
         let estado_string = row.state == 0 ? "running" : row.state == 1 ? "stopped" : "zombie" ;
 
-        array_return.push([String(row.pid), row.name, String(row.father), estado_string])
+        array_return.push({
+          "codeSize": row.codeSize,
+          "father": row.father,
+          "name": row.name,
+          "pid": row.pid,
+          "state": estado_string,
+          "usedCpu": row.usedCpu,
+          "usedRAM": row.usedRAM,
+          "usuario": row.usuario
+      })
       }      
     );
   }  

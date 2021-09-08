@@ -34,7 +34,6 @@ function Monitor() {
 
     return(      
       <>
-      <p>RAM: {get_ram()}</p>
       <Card>
         <br/>
         <br/>
