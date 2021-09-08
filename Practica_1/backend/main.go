@@ -72,24 +72,14 @@ func getProcesos() (dataRAM string) {
 
 /* Endpoint para enviar RAM */
 func send_ram(res http.ResponseWriter, req *http.Request) {
-	var respuesta Message
 	ram_info := getRAM()
-	respuesta = Message{
-		Body:   ram_info,
-		Status: 200,
-	}
-	json.NewEncoder(res).Encode(respuesta)
+	json.NewEncoder(res).Encode(ram_info)
 }
 
 /* Endpoint para enviar Procesos */
 func send_proc(res http.ResponseWriter, req *http.Request) {
-	var respuesta Message
 	proc_info := getProcesos()
-	respuesta = Message{
-		Body:   proc_info,
-		Status: 200,
-	}
-	json.NewEncoder(res).Encode(respuesta)
+	json.NewEncoder(res).Encode(proc_info)
 }
 
 func home(wri http.ResponseWriter, req *http.Request) {
