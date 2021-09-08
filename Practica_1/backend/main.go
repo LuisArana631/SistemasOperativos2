@@ -75,7 +75,7 @@ func send_ram(res http.ResponseWriter, req *http.Request) {
 	ram_info := getRAM()
 	var result map[string]interface{}
 	json.Unmarshal([]byte(ram_info), &result)
-	json.NewEncoder(res).Encode(ram_info)
+	json.NewEncoder(res).Encode(result)
 }
 
 /* Endpoint para enviar Procesos */
@@ -83,7 +83,7 @@ func send_proc(res http.ResponseWriter, req *http.Request) {
 	proc_info := getProcesos()
 	var result map[string]interface{}
 	json.Unmarshal([]byte(proc_info), &result)
-	json.NewEncoder(res).Encode(proc_info)
+	json.NewEncoder(res).Encode(result)
 }
 
 func home(wri http.ResponseWriter, req *http.Request) {
