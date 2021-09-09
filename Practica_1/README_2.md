@@ -71,7 +71,7 @@ implementar una forma de monitorear los recursos del sistema.
 
   En el despliegue de informacion de cada proceso, estos cuentan con una opcion para poder visualizar sus hijos, si es que el proceso tiene procesos dependientes de el. Para ello se tiene el boton "Ver hijos" en el cual, al hacer click muestra a sus correspondientes hijos. De no poseer hijos unicamente mostrara la pantalla en blanco y permitira regresar a ver el listado de procesos.
   
- ![Screenshot](/img/hijos.PNG)
+ ![Screenshot](img/hijos.PNG)
 
 ---
 
