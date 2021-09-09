@@ -1,5 +1,7 @@
 <h1> <b> Práctica #1 - Sistemas Operativos 2 </b> </h1>
 
+<h2> <b> Manual de Tecnico</b> </h2>
+
 ![Github All Releases](https://img.shields.io/badge/Version-1.0-green)
 ![Github All Releases](https://img.shields.io/badge/Curso-Sistemas%20Operativos%202-blue)
 ![Github All Releases](https://img.shields.io/badge/Grupo-23-red)
@@ -89,7 +91,11 @@ Puede consultar más infomación [aquí](https://github.com/LuisArana631/Sistema
 
 ## **Capturas de la aplicación**
 
+![Screenshot](captura1.PNG)
 
+![Screenshot](captura2.PNG)
+
+![Screenshot](captura3.PNG)
 
 ---
 
@@ -108,7 +114,7 @@ Para poder desplegar la aplicación utilizamos dos servicios de AWS, utilizamos 
 
 ---
 
-## **Integrantes Grupo 4**
+## **Integrantes Grupo 23**
 
 | Nombre Completo | Carnet |
 | :----: | :----: |
