@@ -72,7 +72,7 @@ func getProcesos() (dataRAM string) {
 
 /* Endpoint para enviar RAM */
 func send_ram(res http.ResponseWriter, req *http.Request) {
-	ram_info := "{\"bufferRam\":55,\"freeRam\":168,\"porcentajeUsed\":77,\"sharedRam\":0,\"totalRam\":978,\"usedRam\":755}"
+	ram_info := getRAM()
 	var result map[string]interface{}
 	json.Unmarshal([]byte(ram_info), &result)
 	json.NewEncoder(res).Encode(ram_info)
