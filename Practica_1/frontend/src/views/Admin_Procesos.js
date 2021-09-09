@@ -6,21 +6,74 @@ import {
   CardTitle,
   Table,
   Row,
-  Col,
 } from "reactstrap";
-
-// core components
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 import { get_proc } from 'services/services.js'
+
+var tprocesos=0;
+var tejecucion=0;
+var tsuspendidos=0;
+var tdetenidos=0;
+var tzombie=0;
+
+function calcular(process_data){
+  //let process_data  = get_process_data(get_proc());
+  tprocesos=process_data.length;
+  for(let i=0; i<process_data.length;i++){
+    if(process_data[i].state == "suspended"){
+      tsuspendidos++;
+    }else if(process_data[i].state == "stopped"){
+      tdetenidos++;
+    }else if(process_data[i].state == "zombie"){
+      tzombie++;
+    }else if(process_data[i].state == "running"){
+      tejecucion++;
+    }
+  }
+}
+
+function verHijos(id){
+  
+}
 
 function Admin_Procesos() {
 
   let process_data  = get_process_data(get_proc());
-
+  calcular(process_data);
   return (
     <>
       <PanelHeader size="sm" />
       <div className="content">
+      <Row>
+          <Card>
+              <CardHeader>
+                <CardTitle tag="h4">Administrador de procesos</CardTitle>
+              </CardHeader>
+              <CardBody>
+                <Table responsive>
+                  <thead className="text-primary">
+                    <tr>
+                      <th> <b>Total de procesos</b></th>
+                      <th> <b>Procesos en ejecución</b></th>
+                      <th> <b>Procesos suspendidos</b></th>
+                      <th> <b>Procesos detenidos</b></th>
+                      <th> <b>Procesos zombies</b></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{tprocesos}</td>
+                      <td>{tejecucion}</td>
+                      <td>{tsuspendidos}</td>
+                      <td>{tdetenidos}</td>
+                      <td>{tzombie}</td>
+                    </tr>
+                  </tbody>
+                </Table>
+              </CardBody>
+            </Card>
+          
+        </Row>
         <Row>
           <Card>
               <CardHeader>
@@ -38,6 +91,7 @@ function Admin_Procesos() {
                       <th> <b>%CPU</b></th>
                       <th> <b>Task Codesize</b></th>
                       <th> <b>Usuario</b></th>
+                      <th> <b>Hijos</b></th>
                       <th> <b>KILL</b></th>
                     </tr>
                   </thead>
@@ -53,6 +107,7 @@ function Admin_Procesos() {
                           <td>{row.usedCpu}%</td>
                           <td>{row.codeSize}mb</td>
                           <td>{row.usuario}</td>
+                          <td><button type="button" class="btn btn-outline-info" onClick={()=>{verHijos(row.pid)}}>Ver Hijos</button></td>
                           <td><button type="button" class="btn btn-outline-danger mr-1" onClick={() => { kill_proc(row.pid) }}>KILL</button></td>
                         </tr>
                       );
@@ -67,8 +122,6 @@ function Admin_Procesos() {
     </>
   );
 }
-
-export default Admin_Procesos;
 
 function kill_proc(pid){
   fetch(`http://3.14.79.8:8080/kill/${pid}`)
@@ -111,3 +164,5 @@ function GetSortOrder(prop) {
       return 0;    
   }    
 }  
+
+export default Admin_Procesos;
