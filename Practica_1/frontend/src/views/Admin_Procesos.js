@@ -50,7 +50,12 @@ function verHijos(id, process_data){
   div2.style.display="block";
 }
 
-
+function regresar(){
+  var div2=document.getElementById('div2');
+  div2.style.display="none";
+  var div=document.getElementById('divprincipal');
+  div.style.display="block";
+}
 
 function Admin_Procesos() {
 
@@ -141,7 +146,7 @@ function Admin_Procesos() {
           <Card>
               <CardHeader>
                 <CardTitle tag="h4">Arbol de procesos</CardTitle>
-                
+                <button type="button" class="btn btn-outline-success mr-1" onClick={() => { regresar() }}></button>
               </CardHeader>
               <CardBody>
                 <Table responsive>
