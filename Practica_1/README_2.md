@@ -41,31 +41,31 @@ implementar una forma de monitorear los recursos del sistema.
 
   En este apartado de la aplicacion se puede ver facilmente a traves de una grafica en tiempo real, el consumo de memoria RAM. Esta representacion consiste en un poligono de frecuencias que muestra claramente al colocar el cursor sobre alguno de los puntos de la linea que se va trazando, la cantidad que se esta consumiendo y el numero de lectura al que corresponde, ya que todo el sistema se va actualizando cada 3 segundos.
   
-![Screenshot](/img/monitor.PNG)
+![Screenshot](monitor.PNG)
 
 ### **Consumo de Memoria Total del Servidor**
 
   En esta parte del monitor se puede apreciar una tabla con los consumos totales de memoria en el servidor. Esta tabla contiene la informacion correspondiente a no solo memoria RAM consumida, sino el total de memoria con la que cuenta el servidor asi como la que se encuentra libre. Todos estos datos se encuentran en MB.
 
-![Screenshot](/img/totalram.PNG)
+![Screenshot](totalram.PNG)
 
 ### **Porcentaje de Memoria Consumida del Servidor**
 
   En esta tabla se puede verificar el porcentaje que esta siendo consumida por recursos en el servidor.
   
-![Screenshot](/img/porcentajeram.PNG)
+![Screenshot](porcentajeram.PNG)
 
 ### **Administrador de Procesos**
   
   En esta parte se puede observar informacion relevante del servidor, como lo son todos los procesos que se encuentran corriendo en el servidor en ese momento. La informacion general que presentan se muestra a continuacion:
   
-![Screenshot](/img/captura3.PNG)
+![Screenshot](captura3.PNG)
 
 ### **Arbol de Procesos**
 
   El arbol de procesos consiste en una tabulacion detallada de cada proceso que se encuentra corriendo dentro del servidor. Esta informacion se muestra especifica datos como: el nombre, si posee un padre, el porcentaje de memoria RAM que utiliza, entre otros.
   
-![Screenshot](/img/captura4.PNG)
+![Screenshot](captura4.PNG)
 
 ### **Hijos en el Arbol de Procesos**
 
