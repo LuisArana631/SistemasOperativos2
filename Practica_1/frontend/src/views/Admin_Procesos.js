@@ -9,7 +9,6 @@ import {
 } from "reactstrap";
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 import { get_proc } from 'services/services.js'
-import { isRegularExpressionLiteral } from "typescript";
 
 var tprocesos=0;
 var tejecucion=0;
@@ -35,7 +34,7 @@ function calcular(process_data){
 }
 
 function verHijos(id, process_data){
-  console.log("buscando "+id);
+  console.log("buscando... "+id);
   hijos=[];
   for(let i=0; i<process_data.length;i++){
     if(process_data[i].father == id){
@@ -146,7 +145,7 @@ function Admin_Procesos() {
           <Card>
               <CardHeader>
                 <CardTitle tag="h4">Arbol de procesos</CardTitle>
-                <button type="button" class="btn btn-outline-success mr-1" onClick={() => { regresar() }}></button>
+                <button type="button" class="btn btn-outline-success mr-1" onClick={() => { regresar() }}>REGRESAR</button>
               </CardHeader>
               <CardBody>
                 <Table responsive>
