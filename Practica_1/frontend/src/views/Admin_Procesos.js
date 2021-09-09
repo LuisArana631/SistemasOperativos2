@@ -9,12 +9,14 @@ import {
 } from "reactstrap";
 import PanelHeader from "components/PanelHeader/PanelHeader.js";
 import { get_proc } from 'services/services.js'
+import { isRegularExpressionLiteral } from "typescript";
 
 var tprocesos=0;
 var tejecucion=0;
 var tsuspendidos=0;
 var tdetenidos=0;
 var tzombie=0;
+var hijos=[];
 
 function calcular(process_data){
   //let process_data  = get_process_data(get_proc());
@@ -32,9 +34,23 @@ function calcular(process_data){
   }
 }
 
-function verHijos(id){
-  
+function verHijos(id, process_data){
+  console.log("buscando "+id);
+  hijos=[];
+  for(let i=0; i<process_data.length;i++){
+    if(process_data[i].father == id){
+      hijos.push(process_data[i]);
+    }
+  }
+
+  console.log(hijos);
+  var div=document.getElementById('divprincipal');
+  div.style.display="none";
+  var div2=document.getElementById('div2');
+  div2.style.display="block";
 }
+
+
 
 function Admin_Procesos() {
 
@@ -43,7 +59,7 @@ function Admin_Procesos() {
   return (
     <>
       <PanelHeader size="sm" />
-      <div className="content">
+      <div className="content" display="block" id="divprincipal">
       <Row>
           <Card>
               <CardHeader>
@@ -77,7 +93,8 @@ function Admin_Procesos() {
         <Row>
           <Card>
               <CardHeader>
-                <CardTitle tag="h4">Lista de procesos</CardTitle>
+                <CardTitle tag="h4">Arbol de procesos</CardTitle>
+               
               </CardHeader>
               <CardBody>
                 <Table responsive>
@@ -107,7 +124,7 @@ function Admin_Procesos() {
                           <td>{row.usedCpu}%</td>
                           <td>{row.codeSize}mb</td>
                           <td>{row.usuario}</td>
-                          <td><button type="button" class="btn btn-outline-info" onClick={()=>{verHijos(row.pid)}}>Ver Hijos</button></td>
+                          <td><button type="button" class="btn btn-outline-info" onClick={()=>{verHijos(row.pid, process_data)}}>Ver Hijos</button></td>
                           <td><button type="button" class="btn btn-outline-danger mr-1" onClick={() => { kill_proc(row.pid) }}>KILL</button></td>
                         </tr>
                       );
@@ -119,6 +136,37 @@ function Admin_Procesos() {
           
         </Row>
       </div>
+      <div className="content" style={{display:'none'}} id="div2">
+      <Row>
+          <Card>
+              <CardHeader>
+                <CardTitle tag="h4">Arbol de procesos</CardTitle>
+                
+              </CardHeader>
+              <CardBody>
+                <Table responsive>
+                  <thead className="text-primary">
+                    <tr>
+                      <th> <b>PID</b></th>
+                      <th> <b>Nombre del proceso</b></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {hijos.map(row => {
+                      return (
+                        <tr>
+                          <td>{row.pid}</td>
+                          <td>{row.name}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+              </CardBody>
+            </Card>
+          
+        </Row>
+      </div>              
     </>
   );
 }
