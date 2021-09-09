@@ -190,10 +190,6 @@ function Monitor() {
                       <td>{datos.usedRam}</td>
                     </tr>
                     <tr>
-                      <td>Total de memoria RAM compartida</td>
-                      <td>{datos.sharedRam}</td>
-                    </tr>
-                    <tr>
                       <td>Total de memoria RAM libre</td>
                       <td>{datos.freeRam}</td>
                     </tr>

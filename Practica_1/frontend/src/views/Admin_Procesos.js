@@ -19,8 +19,14 @@ var hijos=[];
 
 function calcular(process_data){
   //let process_data  = get_process_data(get_proc());
-  tprocesos=process_data.length;
+  tprocesos=0;
+  tejecucion=0;
+  tsuspendidos=0;
+  tdetenidos=0;
+  tzombie=0;
+  
   for(let i=0; i<process_data.length;i++){
+    tprocesos++;
     if(process_data[i].state == "suspended"){
       tsuspendidos++;
     }else if(process_data[i].state == "stopped"){
