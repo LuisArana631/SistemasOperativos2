@@ -91,11 +91,11 @@ Puede consultar más infomación [aquí](https://github.com/LuisArana631/Sistema
 
 ## **Capturas de la aplicación**
 
-![Screenshot](captura1.PNG)
+![Screenshot](img/captura1.PNG)
 
-![Screenshot](captura2.PNG)
+![Screenshot](img/captura2.PNG)
 
-![Screenshot](captura3.PNG)
+![Screenshot](img/captura3.PNG)
 
 ---
 
