@@ -38,17 +38,26 @@ public class lista_cajas {
     Condition notFull = lock.newCondition();
     Condition notEmpty = lock.newCondition();
     
-    JLabel jtext;
+    int cant_peques_prod=0;
+    int cant_grandes_prod=0;
+    int cant_peques_cons=0;
+    int cant_grandes_cons=0;
+    int espacios_ocupados=0;
     
-    public lista_cajas(int maxSize, JLabel txt){
+    JLabel jtext,lbl_peques_colocadas,lbl_peques_retiradas,lbl_grandes_colocadas,lbl_grandes_retiradas, lbl_espacios;
+    
+    public lista_cajas(int maxSize, JLabel txt, JLabel peques_col, JLabel peques_ret, JLabel grandes_col, JLabel grandes_ret, JLabel lbl_espacios){
         this.maxSize = maxSize;
         this.jtext=txt;
-        
+        this.lbl_peques_colocadas=peques_col;
+        this.lbl_peques_retiradas=peques_ret;
+        this.lbl_grandes_colocadas=grandes_col;
+        this.lbl_grandes_retiradas=grandes_ret;
+        this.lbl_espacios=lbl_espacios;
     }
     
     public void pintar(){
         this.jtext.setText("");
-        //System.out.printf("%c%n", getAscii(219));
         String txt="";
         for (int i = 0; i < this.lista.size(); i++) {
             txt+=String.valueOf(getAscii(220));
@@ -76,6 +85,10 @@ public class lista_cajas {
         }finally{
             this.lock.unlock();
             pintar();
+            this.cant_grandes_prod++;
+            this.lbl_grandes_colocadas.setText(String.valueOf(this.cant_grandes_prod));
+            this.espacios_ocupados+=2;
+            this.lbl_espacios.setText(String.valueOf(this.espacios_ocupados));
             System.out.println("Agregando2");
             return i;
         }      
@@ -99,6 +112,10 @@ public class lista_cajas {
         }finally{
             this.lock.unlock();
             pintar();
+            this.cant_peques_prod++;
+            this.lbl_peques_colocadas.setText(String.valueOf(this.cant_peques_prod));
+            this.espacios_ocupados++;
+            this.lbl_espacios.setText(String.valueOf(this.espacios_ocupados));
             System.out.println("Agregando1");
             //Aqui sumo y resto para mostrar en la interfaz
             return i;
@@ -121,6 +138,10 @@ public class lista_cajas {
         }finally{
             this.lock.unlock();
             pintar();
+            this.cant_peques_cons++;
+            this.lbl_peques_retiradas.setText(String.valueOf(this.cant_peques_cons));
+            this.espacios_ocupados--;
+            this.lbl_espacios.setText(String.valueOf(this.espacios_ocupados));
             System.out.println("quitando1");
             return i;
         } 
@@ -143,6 +164,10 @@ public class lista_cajas {
         }finally{
             this.lock.unlock();
             pintar();
+            this.cant_grandes_cons++;
+            this.lbl_grandes_retiradas.setText(String.valueOf(this.cant_grandes_cons));
+            this.espacios_ocupados-=2;
+            this.lbl_espacios.setText(String.valueOf(this.espacios_ocupados));
             System.out.println("quitando2");
             return i;
         } 

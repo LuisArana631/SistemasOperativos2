@@ -11,15 +11,23 @@ package problema1;
  */
 public class productor_cajas_grandes extends Thread{
     public lista_cajas lista_cajas;
+    public int velocidad = 2000;
+
+    public int getVelocidad() {
+        return velocidad;
+    }
+
+    public void setVelocidad(int velocidad) {
+        this.velocidad = velocidad;
+    }
      
      public productor_cajas_grandes(lista_cajas lista_cajas){
         this.lista_cajas = lista_cajas;
     }
     
     public void producir() throws InterruptedException{
-        Thread.sleep(2000);
+        Thread.sleep(this.velocidad);
         int i = lista_cajas.addTwo();
-        //System.out.println("Produzco caja grande: " + i);
     }
     
     

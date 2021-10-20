@@ -10,18 +10,27 @@ package problema1;
  * @author Dianita
  */
 public class consumidor_cajas_grandes extends Thread {
-     public lista_cajas lista_cajas;
+    public lista_cajas lista_cajas;
+    public int velocidad = 5000;
+
+    public int getVelocidad() {
+        return velocidad;
+    }
+
+    public void setVelocidad(int velocidad) {
+        this.velocidad = velocidad;
+    }
     
     public consumidor_cajas_grandes(lista_cajas lista_cajas){
         this.lista_cajas = lista_cajas;
     }
     
     public void consumir() throws InterruptedException{
-        Thread.sleep(5000);
+        Thread.sleep(this.velocidad);
         int i = lista_cajas.getTwo();
-        
-       // System.out.println("Consumo caja grande: " + i);
     }
+    
+    
     
     @Override
     public void run(){
