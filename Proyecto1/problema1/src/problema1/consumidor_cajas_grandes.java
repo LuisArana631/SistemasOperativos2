@@ -9,17 +9,18 @@ package problema1;
  *
  * @author Dianita
  */
-public class productor_cajas extends Thread{
+public class consumidor_cajas_grandes extends Thread {
      public lista_cajas lista_cajas;
-     
-     public productor_cajas(lista_cajas lista_cajas){
+    
+    public consumidor_cajas_grandes(lista_cajas lista_cajas){
         this.lista_cajas = lista_cajas;
     }
     
-    public void producir() throws InterruptedException{
-        Thread.sleep(1000);
-        int i = lista_cajas.add();
-        System.out.println("Produced: " + i);
+    public void consumir() throws InterruptedException{
+        Thread.sleep(5000);
+        int i = lista_cajas.getTwo();
+        
+       // System.out.println("Consumo caja grande: " + i);
     }
     
     @Override
@@ -28,7 +29,7 @@ public class productor_cajas extends Thread{
         {
            try
            {
-              producir();
+              consumir();
            } 
            catch (InterruptedException ex)
            {
