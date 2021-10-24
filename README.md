@@ -13,6 +13,7 @@ Repositorio que contiene todo el trabajo desarrollado a lo largo del curso de si
 <h2> <b> Contenido </b> </h2>
 
 > * [Práctica 1](https://github.com/LuisArana631/SistemasOperativos2/tree/master/Practica_1)
+> * [Proyecto 1](https://github.com/LuisArana631/SistemasOperativos2/tree/master/Proyecto1)
 > * [Integrantes Grupo 4](#Integrantes-Grupo-23)
 
 ---
