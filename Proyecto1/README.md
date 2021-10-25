@@ -154,11 +154,64 @@ decir no pueden colisionar y se restringen entre ellas el área en la cual puede
 
 ### **Problema 1**
 
+Los *recursos compartidos* para el problema 1, se determinó que los espacio disponibles en la estantería es uno de dichos recursos, al igual que las cantidades de cajas que se dejan y se extraen.
+
+*Deadlock* es el problema que se puede presentar en la ejecución, como bien sabemos que deadlock es cuando 2 o más hilos se bloquean mutuamente, en un ambiente concurrente. Al momento de no tener espacio en la estantería se bloquena los hilos con los procesos producir y consumir.
+
+Para poder solucionar dicho problema debemos bloquear el acceso a ciertos atributos para que un hilo pueda terminar el proceso y que no se genere el problema del deadlock. 
+
+Las clases que analizamos para generar la solución son las siguientes, donde 4 clases son hilos:
+
+![ClasesProblema1](https://i.ibb.co/Rp4QSff/imagen-2021-10-25-005619.png)
+
+Para ejemplificar el flujo que llevan los hilos en dicha solución se puede visualizar en el siguiente diagrama de flujo:
+
+![FlujoProblema1]()
+
+![Flujo2Problema1]()
+
+
+
 ### **Problema 2**
 
+El barbero es un *recurso compartido*, ya que es la persona que atiende a los clientes. Y como los clientes pueden ir llegando de forma aleatoria con el mismo objetivo, dando como resultado una condición de carrera.
 
+*Condición de carrera*, se puede presentar cuando muchos clientes quieren ser atendidos por el barbero, cuando el barbero solo puede atender un cliente a la vez.
+
+Debemos realizar la *exclusión mutua* que surge con el barbero cuando los clientes llegan por un corte de cabello.
+
+Para poder solucionar los problemas mencionados, podemos utilizar estados, banderas o variables. Un estado que simboliza la silla del barbero (libre, ocupado), un contador para la cantidad de clientes en la sala de espera, un estado para simbolizar las sillas de espera (libre, ocupado), también necesitamos de un contador de sillas libres en el área de espera, podemos detectar que la solución se divide en dos clases, los clientes y el barbero, con sus respectivas funciones. La función *syncronized()* nos ayudará a bloquear la lista de clientes actuales en la barbería para que no pueda ser accedida por otro hilo hasta que termine el proceso, y así evitar la condición de carrera.
+
+El orden para que el barbero pueda realizar su trabajo es el siguiente: 
+
+* Esperar un hilo cliente para poder despertar y trabajar
+* Extrae a un cliente de la sala de espera aumentando la cantidad de sillas disponibles en la sala y cambiando de estado a ocupado.
+* Desbloquear aacceso a las sillas libres.
+* Corta el cabello del cliente y vuelve a revisar la sala de espera, si hay un cliente se duerme y sino realizar lo mismo del paso dos.
+
+El orden para que los clientes sean atendidos por el barbero es el siguiente:
+
+* Esperar a que el número de sillas libres sea mayor a 0
+* Si hay sillas libres, toma asiento y si es el único cliente despierta al barbero, sino espera su turno.
+* Si no hay sillas libres, desbloquear el acceso a la cantidad de sillas libres.
+
+Las relaciones entre las clases que se proponen para dar solución al problema se describen en el siguiente diagrama:
+
+![ClasesProblema2](https://i.ibb.co/02X2JH8/imagen-2021-10-25-000912.png)
+
+Sabemos que el barbero estará chequeando la creación de algún hilo cliente para poder empezar a trabajar, realizando el metodo cortar_cabello, sino ejecuta el método dormir para cambiar su estado. 
+
+Ahora para ejemplificar de mejor manera el flujo de los hilos se muestra el siguiente diagrama:
+
+![FlujoProblema2](https://i.ibb.co/XzpTvMb/imagen-2021-10-25-002246.png)
+
+![Flujo2Problema2](https://i.ibb.co/b706d5J/imagen-2021-10-25-002619.png)
+
+Podemos ver el proceso que manejaría cada hilo para poder dar solución al problema.
 
 ### **Problema 3**
+
+
 
 ---
 
@@ -166,7 +219,11 @@ decir no pueden colisionar y se restringen entre ellas el área en la cual puede
 
 ### **Problema 1**
 
+
+
 ### **Problema 3**
+
+
 
 --- 
 
@@ -175,7 +232,6 @@ decir no pueden colisionar y se restringen entre ellas el área en la cual puede
 - [Java](https://www.java.com/es/)
 - [Apache Netbeans](https://netbeans.apache.org)
 - [Hilos Java](https://jarroba.com/multitarea-e-hilos-en-java-con-ejemplos-thread-runnable/)
-
 
 ---
 
