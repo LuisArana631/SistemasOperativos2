@@ -5,6 +5,8 @@
  */
 package problema3;
 
+import interfaz.interfaz;
+
 /**
  *
  * @author Dianita
@@ -16,6 +18,8 @@ public class Problema3 {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        interfaz interfaz=new interfaz();
+        interfaz.show();
     }
     
 }

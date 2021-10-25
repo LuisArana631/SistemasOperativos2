@@ -4,7 +4,13 @@
  * and open the template in the editor.
  */
 package interfaz;
-
+import java.awt.*;
+import java.util.LinkedList;
+import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
+import problema3.disparo;
+import problema3.enemigos;
+import problema3.lista_enemigos;
 /**
  *
  * @author Dianita
@@ -14,8 +20,12 @@ public class interfaz extends javax.swing.JFrame {
     /**
      * Creates new form interfaz
      */
+    enemigos e;
+    LinkedList<enemigos> lista = new LinkedList<>();
     public interfaz() {
         initComponents();
+        lista_enemigos enemigos=new lista_enemigos(lista,jPanel1,lbl_nave1,lbl_nave2);
+        enemigos.start();
     }
 
     /**
@@ -27,22 +37,199 @@ public class interfaz extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        lbl_nave1 = new javax.swing.JLabel();
+        lbl_nave2 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        lbl_info = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
+
+        jPanel1.setBackground(new java.awt.Color(0, 0, 51));
+        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        lbl_nave1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/nave_nueva.png"))); // NOI18N
+        lbl_nave1.setText("jLabel1");
+
+        lbl_nave2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfaz/nave_nueva.png"))); // NOI18N
+        lbl_nave2.setText("jLabel1");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(159, 159, 159)
+                .addComponent(lbl_nave1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 416, Short.MAX_VALUE)
+                .addComponent(lbl_nave2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(261, 261, 261))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(406, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_nave1)
+                    .addComponent(lbl_nave2))
+                .addGap(10, 10, 10))
+        );
+
+        jPanel2.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        lbl_info.setFont(new java.awt.Font("Tempus Sans ITC", 1, 24)); // NOI18N
+        lbl_info.setForeground(new java.awt.Color(255, 255, 204));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_info, javax.swing.GroupLayout.PREFERRED_SIZE, 546, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_info, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(49, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1291, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 6, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 675, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        // Moviendo nave
+        switch(evt.getKeyChar()){
+            case 'a':
+                //me muevo a la izquierda con nave 1
+                mover(1,-1);
+                break;
+            case 'd':
+                //me muevo a la derecha con nave 1
+                mover(1,1);
+                break;
+            case 's':
+                //me muevo a la derecha con nave 1
+                disparo d =new disparo(jPanel1,lista,(lbl_nave1.getLocation().x+15));
+                d.start();
+                break;
+            case 'j':
+                //me muevo a la izquierda con nave 2
+                mover(2,-1);
+                break;
+            case 'l':
+                //me muevo a la derecha con nave 2
+                mover(2,1);
+                break;
+                
+            case 'k':
+                //me muevo a la derecha con nave 1
+                disparo d2 =new disparo(jPanel1,lista,(lbl_nave2.getLocation().x+15));
+                d2.start();
+                break;
+               
+        }
+        
+    }//GEN-LAST:event_formKeyPressed
+    
+    /*
+    nave-> si es la nave 1 o la 2
+    direccion ses -1->izquierda 1 -> derecha
+    */
+    public void mover(int nave, int direccion){
+        lbl_info.setText("");
+        if(nave == 1){//nave1
+            if(direccion == 1){//me muevo a la derecha   
+                Point posActual=lbl_nave1.getLocation();
+                if(validarChoque(lbl_nave1,lbl_nave2)){
+                    lbl_info.setText("¡¡NAVE1 invadiendo territorio de la NAVE2!!");
+                    posActual.x=posActual.x - 10;
+                    lbl_nave1.setLocation(posActual);
+                    lbl_nave1.repaint();
+                }else{
+                    posActual.x=posActual.x + 10;
+                    lbl_nave1.setLocation(posActual);
+                    lbl_nave1.repaint();
+                }
+            }else{//me muevo a la izquierda
+                /*if(validarChoque(lbl_nave1,lbl_nave2)){
+                    lbl_info.setText("NAVE1 invadiendo territodio de la NAVE2");
+                    posActual.x=posActual.x + 10;
+                    lbl_nave1.setLocation(posActual);
+                    lbl_nave1.repaint();
+                }else{*/
+                    Point posActual=lbl_nave1.getLocation();
+                    posActual.x=posActual.x - 10;
+                    lbl_nave1.setLocation(posActual);
+                    lbl_nave1.repaint();
+                //}
+            }
+        }else{//nave2
+            
+            if(direccion == 1){//me muevo a la derecha
+                /*if(validarChoque(lbl_nave1,lbl_nave2)){
+                    System.out.println("Nave2 sobre nave1-> no me muevo");
+                    lbl_info.setText("NAVE2 invadiendo territodio de la NAVE1");
+                    posActual.x=posActual.x - 10;
+                    lbl_nave2.setLocation(posActual);
+                    lbl_nave2.repaint();
+                }else{*/
+                    Point posActual=lbl_nave2.getLocation();
+                    posActual.x=posActual.x + 10;
+                    lbl_nave2.setLocation(posActual);
+                    lbl_nave2.repaint();
+                //}                
+            }else{//me muevo a la izquierda
+                Point posActual=lbl_nave2.getLocation();
+                if(validarChoque(lbl_nave1,lbl_nave2)){
+                    lbl_info.setText("¡¡NAVE2 invadiendo territorio de la NAVE1!!");
+                    posActual.x=posActual.x + 10;
+                    lbl_nave2.setLocation(posActual);
+                    lbl_nave2.repaint();
+                }else{
+                    posActual.x=posActual.x - 10;
+                    lbl_nave2.setLocation(posActual);
+                    lbl_nave2.repaint();
+                }
+                
+            }
+        
+        
+        }
+    }
+    
+    public boolean validarChoque(JLabel lbl1, JLabel lbl2){
+        Rectangle rectB = lbl2.getBounds();
+        Rectangle result = SwingUtilities.computeIntersection(lbl1.getX(), lbl1.getY(), lbl1.getWidth(), lbl1.getHeight(), rectB);
+        return (result.getWidth() > 0 && result.getHeight() > 0);
+    }
     /**
      * @param args the command line arguments
      */
@@ -79,5 +266,10 @@ public class interfaz extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lbl_info;
+    private javax.swing.JLabel lbl_nave1;
+    private javax.swing.JLabel lbl_nave2;
     // End of variables declaration//GEN-END:variables
 }
