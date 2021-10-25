@@ -42,6 +42,7 @@ public class interfaz extends javax.swing.JFrame {
         lbl_nave2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         lbl_info = new javax.swing.JLabel();
+        lbl_info1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -85,22 +86,31 @@ public class interfaz extends javax.swing.JFrame {
 
         lbl_info.setFont(new java.awt.Font("Tempus Sans ITC", 1, 24)); // NOI18N
         lbl_info.setForeground(new java.awt.Color(255, 255, 204));
+        lbl_info.setText("R -> Reinicio");
+
+        lbl_info1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 24)); // NOI18N
+        lbl_info1.setForeground(new java.awt.Color(255, 255, 204));
+        lbl_info1.setText("P -> Pausa");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lbl_info, javax.swing.GroupLayout.PREFERRED_SIZE, 546, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lbl_info1, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_info, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lbl_info, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(49, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbl_info1)
+                .addGap(8, 8, 8)
+                .addComponent(lbl_info)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -154,7 +164,14 @@ public class interfaz extends javax.swing.JFrame {
                 disparo d2 =new disparo(jPanel1,lista,(lbl_nave2.getLocation().x+15));
                 d2.start();
                 break;
-               
+                
+            case 'p':
+                //pauso el juego
+                break;
+            
+            case 'r':
+                //pauso el juego
+                break;
         }
         
     }//GEN-LAST:event_formKeyPressed
@@ -164,64 +181,34 @@ public class interfaz extends javax.swing.JFrame {
     direccion ses -1->izquierda 1 -> derecha
     */
     public void mover(int nave, int direccion){
-        lbl_info.setText("");
+  
         if(nave == 1){//nave1
-            if(direccion == 1){//me muevo a la derecha   
-                Point posActual=lbl_nave1.getLocation();
-                if(validarChoque(lbl_nave1,lbl_nave2)){
-                    lbl_info.setText("¡¡NAVE1 invadiendo territorio de la NAVE2!!");
-                    posActual.x=posActual.x - 10;
-                    lbl_nave1.setLocation(posActual);
-                    lbl_nave1.repaint();
-                }else{
+            Point posActual=lbl_nave1.getLocation();
+            if(direccion == 1){//me muevo a la derecha -> peligro invasion espacio nave2  
+                if(!(validarChoque(lbl_nave1,lbl_nave2))){
                     posActual.x=posActual.x + 10;
                     lbl_nave1.setLocation(posActual);
                     lbl_nave1.repaint();
                 }
             }else{//me muevo a la izquierda
-                /*if(validarChoque(lbl_nave1,lbl_nave2)){
-                    lbl_info.setText("NAVE1 invadiendo territodio de la NAVE2");
-                    posActual.x=posActual.x + 10;
-                    lbl_nave1.setLocation(posActual);
-                    lbl_nave1.repaint();
-                }else{*/
-                    Point posActual=lbl_nave1.getLocation();
-                    posActual.x=posActual.x - 10;
-                    lbl_nave1.setLocation(posActual);
-                    lbl_nave1.repaint();
-                //}
+                posActual.x=posActual.x - 10;
+                lbl_nave1.setLocation(posActual);
+                lbl_nave1.repaint();
             }
-        }else{//nave2
             
+        }else{//nave2
+            Point posActual=lbl_nave2.getLocation();
             if(direccion == 1){//me muevo a la derecha
-                /*if(validarChoque(lbl_nave1,lbl_nave2)){
-                    System.out.println("Nave2 sobre nave1-> no me muevo");
-                    lbl_info.setText("NAVE2 invadiendo territodio de la NAVE1");
-                    posActual.x=posActual.x - 10;
-                    lbl_nave2.setLocation(posActual);
-                    lbl_nave2.repaint();
-                }else{*/
-                    Point posActual=lbl_nave2.getLocation();
-                    posActual.x=posActual.x + 10;
-                    lbl_nave2.setLocation(posActual);
-                    lbl_nave2.repaint();
-                //}                
-            }else{//me muevo a la izquierda
-                Point posActual=lbl_nave2.getLocation();
-                if(validarChoque(lbl_nave1,lbl_nave2)){
-                    lbl_info.setText("¡¡NAVE2 invadiendo territorio de la NAVE1!!");
-                    posActual.x=posActual.x + 10;
-                    lbl_nave2.setLocation(posActual);
-                    lbl_nave2.repaint();
-                }else{
+                posActual.x=posActual.x + 10;
+                lbl_nave2.setLocation(posActual);
+                lbl_nave2.repaint();
+            }else{//me muevo a la izquierda -> peligro de invasion espacion nave1
+                if(!(validarChoque(lbl_nave2,lbl_nave1))){
                     posActual.x=posActual.x - 10;
                     lbl_nave2.setLocation(posActual);
                     lbl_nave2.repaint();
                 }
-                
             }
-        
-        
         }
     }
     
@@ -269,6 +256,7 @@ public class interfaz extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lbl_info;
+    private javax.swing.JLabel lbl_info1;
     private javax.swing.JLabel lbl_nave1;
     private javax.swing.JLabel lbl_nave2;
     // End of variables declaration//GEN-END:variables

@@ -19,11 +19,11 @@ import javax.swing.SwingUtilities;
  */
 public class enemigos extends Thread{
     int posX, posY, vidas=2;
-    int vidas_n1=3,vidas_n2=3;
     JLabel lbl_enemigo, lbl_nave1,lbl_nave2;
     JPanel panel;
     int naves_perdidas=0, enemigos_escapados=0;
     public lista_enemigos lista_enemigos;
+    public static int vidas_naves_escapadas=6,vidas_n1=3,vidas_n2=3;
     
     public enemigos(JPanel panel, lista_enemigos lista_enemigos, JLabel nave1, JLabel nave2) {
         this.panel=panel;
@@ -45,55 +45,65 @@ public class enemigos extends Thread{
         this.lbl_enemigo.setLocation(this.posX,this.posY);
         this.panel.repaint();
         validarVidas();
-        
-        Thread.sleep(400);
+        Thread.sleep(200);
     }
     
     public void validarVidas(){
-        if(validarChoque(this.lbl_enemigo,this.lbl_nave1)){//enemigo choca con nave1
-            this.vidas_n1--;
-            if(this.vidas_n1 == 0){
-                System.out.println("choco 1 con nave enemiga "+this.vidas_n1+"  naves amigas eliminadas: ");
+        //validando choque de enemigos con naves amigas nave 1
+        if(validarChoque(lbl_enemigo,lbl_nave1)){
+            vidas_n1--;
+            System.out.println("Vidas nave1 "+vidas_n1);
+            if(vidas_n1 == 0){
+                
                 this.panel.remove(this.lbl_nave1);
-                this.naves_perdidas++;
-                if(this.naves_perdidas == 2){//Terminamos la partida
-                    System.out.println("FIN PARTIDA :'c  ");
-        
-                 }
                 this.panel.repaint();
+               
             }
+            this.panel.remove(this.lbl_enemigo);
+            this.panel.repaint();
+            stop();
         }
-        if(validarChoque(this.lbl_enemigo,this.lbl_nave2)){//enemigo choca con nave1
-            this.vidas_n2--;
-            
-            if(this.vidas_n2 == 0){
+        
+        //validando choque de enemigos con naves amigas nave 2
+        if(validarChoque(lbl_enemigo,lbl_nave2)){
+            vidas_n2--;
+            System.out.println("Vidas nave2 "+vidas_n2);
+            if(vidas_n2==0){
                 this.panel.remove(this.lbl_nave2);
-                this.naves_perdidas++;
-                System.out.println("choco 2 con nave enemiga "+this.vidas_n2+"  naves amigas eliminadas: ");
-                if(this.naves_perdidas == 2){//Terminamos la partida
-                    System.out.println("FIN PARTIDA :'c  ");
+                this.panel.repaint();
+               
+            }
+            this.panel.remove(this.lbl_enemigo);
+            this.panel.repaint();
+            stop();
+        }
         
-                }
+        //valido que ninguna nave enemiga haya escapado
+        Point posEnemigo=this.lbl_enemigo.getLocation();
+        if(posEnemigo.y == 480){// si pasa esta posicion ya F
+            vidas_n1--;
+            vidas_n2--;
+            this.panel.remove(this.lbl_enemigo);
+            this.panel.repaint();
+            stop();
+            if(vidas_n1 == 0){
+                this.panel.remove(this.lbl_nave1);
+                this.panel.repaint();
+            }else if(vidas_n2 == 0){
+                this.panel.remove(this.lbl_nave2);
                 this.panel.repaint();
             }
         }
         
-        Point posEnemigo=this.lbl_enemigo.getLocation();
-        if(posEnemigo.y > 510){
-            this.enemigos_escapados++;
-            System.out.println("enemigos escapados  "+this.enemigos_escapados);
-            if(enemigos_escapados == 3){
-                 System.out.println("FIN PARTIDA :'c  por escape de naves enemigas");
-                 finalizarPartida();
-            }
+        if(vidas_n1 <= 0 && vidas_n2 <= 0){
+                finalizarPartida();
         }
     }
     
     public void finalizarPartida(){
         System.out.println("Entro metodo finalizar partida");
-        this.panel.remove(this.lbl_enemigo);
-                      
-        stop();
+        //this.panel.remove(this.lbl_enemigo);   
+        //stop();
     }
     
     public boolean validarChoque(JLabel lbl1, JLabel lbl2){

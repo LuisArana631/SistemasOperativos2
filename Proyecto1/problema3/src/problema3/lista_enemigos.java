@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package problema3;
+import java.awt.Point;
 import java.util.LinkedList;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
