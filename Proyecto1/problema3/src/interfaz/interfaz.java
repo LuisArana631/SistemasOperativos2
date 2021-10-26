@@ -22,10 +22,13 @@ public class interfaz extends javax.swing.JFrame {
      */
     enemigos e;
     LinkedList<enemigos> lista = new LinkedList<>();
+    public static boolean pausa=false;
+    lista_enemigos enemigos;
+    disparo d;
     public interfaz() {
         initComponents();
-        lista_enemigos enemigos=new lista_enemigos(lista,jPanel1,lbl_nave1,lbl_nave2);
-        enemigos.start();
+       enemigos=new lista_enemigos(lista,jPanel1,lbl_nave1,lbl_nave2);
+       enemigos.start();
     }
 
     /**
@@ -41,8 +44,6 @@ public class interfaz extends javax.swing.JFrame {
         lbl_nave1 = new javax.swing.JLabel();
         lbl_nave2 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        lbl_info = new javax.swing.JLabel();
-        lbl_info1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -84,33 +85,15 @@ public class interfaz extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(0, 102, 102));
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        lbl_info.setFont(new java.awt.Font("Tempus Sans ITC", 1, 24)); // NOI18N
-        lbl_info.setForeground(new java.awt.Color(255, 255, 204));
-        lbl_info.setText("R -> Reinicio");
-
-        lbl_info1.setFont(new java.awt.Font("Tempus Sans ITC", 1, 24)); // NOI18N
-        lbl_info1.setForeground(new java.awt.Color(255, 255, 204));
-        lbl_info1.setText("P -> Pausa");
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lbl_info1, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_info, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 944, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lbl_info1)
-                .addGap(8, 8, 8)
-                .addComponent(lbl_info)
-                .addContainerGap())
+            .addGap(0, 52, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -128,7 +111,8 @@ public class interfaz extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1))
         );
 
         pack();
@@ -139,41 +123,58 @@ public class interfaz extends javax.swing.JFrame {
         switch(evt.getKeyChar()){
             case 'a':
                 //me muevo a la izquierda con nave 1
-                mover(1,-1);
+                if(!pausa){
+                    mover(1,-1);
+                }
                 break;
             case 'd':
                 //me muevo a la derecha con nave 1
-                mover(1,1);
+                if(!pausa){
+                    mover(1,1);
+                }
                 break;
             case 's':
                 //me muevo a la derecha con nave 1
-                disparo d =new disparo(jPanel1,lista,(lbl_nave1.getLocation().x+15));
-                d.start();
+                if(!pausa){
+                    d =new disparo(jPanel1,lista,(lbl_nave1.getLocation().x+15));
+                    d.start();
+                }
                 break;
             case 'j':
                 //me muevo a la izquierda con nave 2
-                mover(2,-1);
+                if(!pausa){
+                    mover(2,-1);
+                }
                 break;
             case 'l':
                 //me muevo a la derecha con nave 2
-                mover(2,1);
+                if(!pausa){
+                    mover(2,1);
+                }
                 break;
                 
             case 'k':
                 //me muevo a la derecha con nave 1
-                disparo d2 =new disparo(jPanel1,lista,(lbl_nave2.getLocation().x+15));
-                d2.start();
+                if(!pausa){
+                    d =new disparo(jPanel1,lista,(lbl_nave2.getLocation().x+15));
+                    d.start();
+                }
                 break;
                 
             case 'p':
-                //pauso el juego
+                //pauso el juego con 1
+                pausa=true;
                 break;
             
             case 'r':
-                //pauso el juego
+                //reanudo el juego con 2
+                pausa=false;
+                for (enemigos object : lista) {
+                    System.out.println("reanudo "+lista.element());
+                    object.resume();
+                }
                 break;
         }
-        
     }//GEN-LAST:event_formKeyPressed
     
     /*
@@ -255,8 +256,6 @@ public class interfaz extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JLabel lbl_info;
-    private javax.swing.JLabel lbl_info1;
     private javax.swing.JLabel lbl_nave1;
     private javax.swing.JLabel lbl_nave2;
     // End of variables declaration//GEN-END:variables

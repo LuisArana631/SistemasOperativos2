@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.*;
+import interfaz.interfaz;
 /**
  *
  * @author Dianita
@@ -29,8 +30,8 @@ public class lista_enemigos extends Thread{
     @Override
     public void run(){
         try{
-            while(true){
-                enemigos e=new enemigos(this.panel,this,this.lbl_nave1,this.lbl_nave2);
+            while(!interfaz.pausa){
+                enemigos e=new enemigos(this.panel,lista,this.lbl_nave1,this.lbl_nave2);
                 e.start();
                 lista.add(e);
                 Thread.sleep(5000);

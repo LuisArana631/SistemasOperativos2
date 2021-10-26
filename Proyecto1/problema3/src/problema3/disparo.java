@@ -38,7 +38,7 @@ public class disparo extends Thread{
     
     public void colision(){
         for (enemigos object : lista) {
-            if(object.vidas!=0){
+            if(object.vidas!=0 && !interfaz.interfaz.pausa){
                 if(validarChoque(object.lbl_enemigo,this.lbl_bala)){
                     object.vidas-=1;
                     if(object.vidas == 0){
@@ -77,7 +77,7 @@ public class disparo extends Thread{
     
     @Override
     public void run(){
-        while (true)
+        while (!interfaz.interfaz.pausa)
         {
            try
            {

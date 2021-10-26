@@ -12,7 +12,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
+import interfaz.interfaz;
+import java.awt.Image;
+import java.util.LinkedList;
 /**
  *
  * @author Dianita
@@ -22,10 +24,10 @@ public class enemigos extends Thread{
     JLabel lbl_enemigo, lbl_nave1,lbl_nave2;
     JPanel panel;
     int naves_perdidas=0, enemigos_escapados=0;
-    public lista_enemigos lista_enemigos;
-    public static int vidas_naves_escapadas=6,vidas_n1=3,vidas_n2=3;
+    public LinkedList<enemigos> lista_enemigos=new LinkedList<>();
+    public static int vidas_naves_escapadas=6,vidas_n1=3,vidas_n2=3, tiempo=0, velocidad=4000;
     
-    public enemigos(JPanel panel, lista_enemigos lista_enemigos, JLabel nave1, JLabel nave2) {
+    public enemigos(JPanel panel, LinkedList<enemigos> lista_enemigos, JLabel nave1, JLabel nave2) {
         this.panel=panel;
         this.lista_enemigos=lista_enemigos;
         this.lbl_nave1=nave1;
@@ -40,12 +42,19 @@ public class enemigos extends Thread{
     }
 
     public void generarEnemigos() throws InterruptedException{
-        //this.posX=50;
+        
         this.posY+=10;
         this.lbl_enemigo.setLocation(this.posX,this.posY);
         this.panel.repaint();
         validarVidas();
-        Thread.sleep(200);
+        tiempo++;
+        if (tiempo == 25){
+            System.out.println("Mas rapido :v");
+            velocidad-=1000;
+            tiempo=0;
+        }
+        System.out.println("tiempo en seg -> "+tiempo);
+        Thread.sleep(velocidad);
     }
     
     public void validarVidas(){
@@ -54,7 +63,8 @@ public class enemigos extends Thread{
             vidas_n1--;
             System.out.println("Vidas nave1 "+vidas_n1);
             if(vidas_n1 == 0){
-                
+                //cuando borro la nave la mando fuera de la pantalla
+                this.lbl_nave1.setLocation(posX, 950);
                 this.panel.remove(this.lbl_nave1);
                 this.panel.repaint();
                
@@ -69,6 +79,8 @@ public class enemigos extends Thread{
             vidas_n2--;
             System.out.println("Vidas nave2 "+vidas_n2);
             if(vidas_n2==0){
+                //cuando borro la nave la mando fuera de la pantalla
+                this.lbl_nave2.setLocation(posX, 950);
                 this.panel.remove(this.lbl_nave2);
                 this.panel.repaint();
                
@@ -102,8 +114,23 @@ public class enemigos extends Thread{
     
     public void finalizarPartida(){
         System.out.println("Entro metodo finalizar partida");
-        //this.panel.remove(this.lbl_enemigo);   
-        //stop();
+        interfaz.pausa=true;
+        JLabel gameover=new JLabel();
+        gameover.setBounds(225,30,500,500);
+        gameover.setIcon(resize("/interfaz/game_over.gif",gameover));
+        this.panel.add(gameover);
+        for (enemigos object : lista_enemigos) {
+            this.panel.remove(object.lbl_enemigo);
+        }
+        this.panel.remove(this.lbl_nave1);
+        this.panel.remove(this.lbl_nave2);
+        this.panel.repaint();
+    }
+    
+    public ImageIcon resize(String ruta, JLabel label){
+        ImageIcon imagen = new ImageIcon(getClass().getResource(ruta));
+        ImageIcon icono = new ImageIcon(imagen.getImage().getScaledInstance(label.getWidth(), label.getHeight(),Image.SCALE_DEFAULT));
+        return icono;
     }
     
     public boolean validarChoque(JLabel lbl1, JLabel lbl2){
@@ -112,19 +139,27 @@ public class enemigos extends Thread{
         return (result.getWidth() > 0 && result.getHeight() > 0);
     }
     
+     public void reanudar(){
+        for (enemigos object : lista_enemigos) {
+            System.out.println("reanudo ");
+            object.resume();
+        }
+        resume();
+    }
+    
     @Override
     public void run(){
-        while (true)
+        while (!interfaz.pausa)
         {
            try
            {
-              generarEnemigos();
+               generarEnemigos();
            } 
            catch (InterruptedException ex)
            {
               ex.printStackTrace();
            }
         }
+        
     }
-    
 }
