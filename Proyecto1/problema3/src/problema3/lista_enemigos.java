@@ -10,6 +10,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.*;
 import interfaz.interfaz;
+
 /**
  *
  * @author Dianita
@@ -19,6 +20,7 @@ public class lista_enemigos extends Thread{
     LinkedList<enemigos> lista = new LinkedList<enemigos>();
     JPanel panel;
     JLabel lbl_nave1,lbl_nave2;
+    
 
     public lista_enemigos( LinkedList<enemigos> lista, JPanel panel,JLabel nave1, JLabel nave2) {
         this.lista=lista;
@@ -27,6 +29,7 @@ public class lista_enemigos extends Thread{
         this.lbl_nave2=nave2;
     }
     
+    
     @Override
     public void run(){
         try{
@@ -34,7 +37,11 @@ public class lista_enemigos extends Thread{
                 enemigos e=new enemigos(this.panel,lista,this.lbl_nave1,this.lbl_nave2);
                 e.start();
                 lista.add(e);
-                Thread.sleep(5000);
+                int vel=tiempo.validarTiempo();
+                if(vel != 0){
+                    Thread.sleep(vel);
+                }
+                Thread.sleep(1000);
             }
             
         }catch(InterruptedException ex){

@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 import problema3.disparo;
 import problema3.enemigos;
 import problema3.lista_enemigos;
+import problema3.tiempo;
 /**
  *
  * @author Dianita
@@ -24,11 +25,16 @@ public class interfaz extends javax.swing.JFrame {
     LinkedList<enemigos> lista = new LinkedList<>();
     public static boolean pausa=false;
     lista_enemigos enemigos;
+    tiempo t;
     disparo d;
+    public static LinkedList<disparo> lista_disparos = new LinkedList<>();
     public interfaz() {
         initComponents();
-       enemigos=new lista_enemigos(lista,jPanel1,lbl_nave1,lbl_nave2);
-       enemigos.start();
+        enemigos=new lista_enemigos(lista,jPanel1,lbl_nave1,lbl_nave2);
+        t=new tiempo();
+        t.start();
+        enemigos.start();
+        
     }
 
     /**
@@ -137,6 +143,7 @@ public class interfaz extends javax.swing.JFrame {
                 //me muevo a la derecha con nave 1
                 if(!pausa){
                     d =new disparo(jPanel1,lista,(lbl_nave1.getLocation().x+15));
+                    lista_disparos.add(d);
                     d.start();
                 }
                 break;
@@ -157,6 +164,7 @@ public class interfaz extends javax.swing.JFrame {
                 //me muevo a la derecha con nave 1
                 if(!pausa){
                     d =new disparo(jPanel1,lista,(lbl_nave2.getLocation().x+15));
+                    lista_disparos.add(d);
                     d.start();
                 }
                 break;

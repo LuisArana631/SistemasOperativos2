@@ -21,6 +21,7 @@ public class disparo extends Thread{
     JPanel panel;
    // public lista_enemigos lista_enemigos;
     LinkedList<enemigos> lista = new LinkedList<>();
+   
     JLabel lbl_bala;
     public int posX, posY;
 

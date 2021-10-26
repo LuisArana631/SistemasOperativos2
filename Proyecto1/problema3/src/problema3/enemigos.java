@@ -25,7 +25,7 @@ public class enemigos extends Thread{
     JPanel panel;
     int naves_perdidas=0, enemigos_escapados=0;
     public LinkedList<enemigos> lista_enemigos=new LinkedList<>();
-    public static int vidas_naves_escapadas=6,vidas_n1=3,vidas_n2=3, tiempo=0, velocidad=4000;
+    public static int vidas_naves_escapadas=6,vidas_n1=3,vidas_n2=3;
     
     public enemigos(JPanel panel, LinkedList<enemigos> lista_enemigos, JLabel nave1, JLabel nave2) {
         this.panel=panel;
@@ -47,14 +47,7 @@ public class enemigos extends Thread{
         this.lbl_enemigo.setLocation(this.posX,this.posY);
         this.panel.repaint();
         validarVidas();
-        tiempo++;
-        if (tiempo == 25){
-            System.out.println("Mas rapido :v");
-            velocidad-=1000;
-            tiempo=0;
-        }
-        System.out.println("tiempo en seg -> "+tiempo);
-        Thread.sleep(velocidad);
+        Thread.sleep(400);
     }
     
     public void validarVidas(){
@@ -113,7 +106,6 @@ public class enemigos extends Thread{
     }
     
     public void finalizarPartida(){
-        System.out.println("Entro metodo finalizar partida");
         interfaz.pausa=true;
         JLabel gameover=new JLabel();
         gameover.setBounds(225,30,500,500);
@@ -121,6 +113,9 @@ public class enemigos extends Thread{
         this.panel.add(gameover);
         for (enemigos object : lista_enemigos) {
             this.panel.remove(object.lbl_enemigo);
+        }
+        for(disparo object: interfaz.lista_disparos){
+            this.panel.remove(object.lbl_bala);
         }
         this.panel.remove(this.lbl_nave1);
         this.panel.remove(this.lbl_nave2);
