@@ -166,11 +166,11 @@ Las clases que analizamos para generar la solución son las siguientes, donde 4 
 
 Para ejemplificar el flujo que llevan los hilos en dicha solución se puede visualizar en el siguiente diagrama de flujo:
 
-![FlujoProblema1]()
+![FlujoProblema1](https://i.ibb.co/D1NSk1F/imagen-2021-10-26-205859.png)
 
-![Flujo2Problema1]()
+![Flujo2Problema1](https://i.ibb.co/fkLfkcw/imagen-2021-10-26-210024.png)
 
-
+Podemos ver el proceso que se maneja en cada hilo. Ahora para poder sincronizar los diferentes hilos que componen nuestra solución
 
 ### **Problema 2**
 
