@@ -172,13 +172,21 @@ public class interfaz extends javax.swing.JFrame {
             case 'p':
                 //pauso el juego con 1
                 pausa=true;
+                for (enemigos object : lista) {
+                    object.suspend();
+                }
+                for (disparo object : lista_disparos) {
+                    object.suspend();
+                }
                 break;
             
             case 'r':
                 //reanudo el juego con 2
                 pausa=false;
                 for (enemigos object : lista) {
-                    System.out.println("reanudo "+lista.element());
+                    object.resume();
+                }
+                for (disparo object : lista_disparos) {
                     object.resume();
                 }
                 break;
