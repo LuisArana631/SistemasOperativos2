@@ -162,6 +162,11 @@ Para poder solucionar dicho problema debemos bloquear el acceso a ciertos atribu
 
 Las clases que analizamos para generar la solución son las siguientes, donde 4 clases son hilos:
 
+* Consumidor Caja Grande
+* Consumidor Caja Pequeña
+* Productor Caja Grande
+* Productore Caja Pequeña
+
 ![ClasesProblema1](https://i.ibb.co/Rp4QSff/imagen-2021-10-25-005619.png)
 
 Para ejemplificar el flujo que llevan los hilos en dicha solución se puede visualizar en el siguiente diagrama de flujo:
@@ -267,6 +272,50 @@ Podemos ver el proceso que manejaría cada hilo para poder dar solución al prob
 
 ### **Problema 3**
 
+Los *hilos* que se detectaron para poder desarrollar el problema fueron los siguientes: hilo para manejar el tiempo, hilo para los jugadores, el hilo de cada disparo y por ultimo el hilo de cada enemigo. En el siguiente diagrama de clases podemos ver las clases generadas para la implementación. 
+
+![ClasesProblema3](https://i.ibb.co/gVw2kr7/imagen-2021-10-26-235506.png)
+
+En el diagram podemos ver como todas las clases son abstracciones hacia la clase listaEnemigo que es la controladora de la lógica del juego.
+
+Como *recursos compartidos* Los enemigos ya que ambos usuarios pueden disparar al mismo enemigo y también el tiempo es un recurso compartido por todos los hilos de la aplicación.
+
+A continuación vemos el diagrama de flujo de los diferentes sucesos del juego:
+
+![FlujoProblema3](https://i.ibb.co/9V32NH7/imagen-2021-10-27-002223.png)
+
+![Flujo2Problema3](https://i.ibb.co/wc6qqpW/imagen-2021-10-27-002427.png)
+
+![Flujo3Problema3](https://i.ibb.co/9NKncmM/imagen-2021-10-27-005423.png)
+
+![Flujo4Problema3](https://i.ibb.co/TBfqXSP/imagen-2021-10-27-004334.png)
+
+Los problemas que se pueden presentar a la hora de utilizar hilos son los siguientes, la *inconsistencia de los datos* cuando no se sincronizan de forma correcta todos los hilos de nuestra aplicación modificando algún valor en un tiempo incorrecto. También entre los errores se puede llegar a presentar una *condición de carrera* como el del barbero esta vez en la generación de enemigos y la de balas. Para poder solucionar dichos problemas y también realizar la sincronización de todo el sistema se utilizaron los siguientes metodos:
+
+```java
+    public void generarEnemigos() throws InterruptedException{    
+        this.posY+=10;
+        this.lbl_enemigo.setLocation(this.posX,this.posY);
+        this.panel.repaint();
+        validarVidas();
+        Thread.sleep(400);
+    }
+```
+
+El código anterior nos sirve para poder generar un enemigo en una posición aleatoria para poder después dormir dicho hilo y generar un nuevo enemigo. 
+
+```java
+    public void generarBalitas() throws InterruptedException{
+        this.posY-=10;
+        this.lbl_bala.setLocation(this.posX,this.posY);
+        this.panel.repaint();
+        colision();
+        Thread.sleep(300);
+    }
+```
+
+Para generar balas es igual el código que se utiliza donde se genera la imagen de la bala y se duerme el hilo.
+
 
 
 ---
@@ -287,7 +336,11 @@ En la parte derecha de la aplicación tenemos un formulario donde podemos cambia
 
 ### **Problema 3**
 
+![InterfazProblema3](https://i.ibb.co/j4TmfDn/imagen-2021-10-27-014036.png)
 
+El juego space invaders es muy entretenido, al igual que es muy sencillo el manejo de las naves, siendo ASD para controlar al jugador de la izquierda y JKL para el jugador de la derecha, A y J para mover al jugador a la izquierda, D y L para mover al jugador a la derecha y por último K y S para dispararle a los enemigos, la mecánica del juego es destruir todas las naves y no permitir que choquen contigo o que lleguen al suelo. 
+
+Para poder pausar el juego puedes presionar la tecla p y para reanudar la tecla r, el juego termina cuando pierden 3 vidas.
 
 --- 
 

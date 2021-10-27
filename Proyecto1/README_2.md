@@ -175,9 +175,169 @@ decir no pueden colisionar y se restringen entre ellas el área en la cual puede
 
 ### **Problema 1**
 
+Los *recursos compartidos* para el problema 1, se determinó que los espacio disponibles en la estantería es uno de dichos recursos, al igual que las cantidades de cajas que se dejan y se extraen.
+
+*Deadlock* es el problema que se puede presentar en la ejecución, como bien sabemos que deadlock es cuando 2 o más hilos se bloquean mutuamente, en un ambiente concurrente. Al momento de no tener espacio en la estantería se bloquena los hilos con los procesos producir y consumir.
+
+Para poder solucionar dicho problema debemos bloquear el acceso a ciertos atributos para que un hilo pueda terminar el proceso y que no se genere el problema del deadlock. 
+
+Las clases que analizamos para generar la solución son las siguientes, donde 4 clases son hilos:
+
+* Consumidor Caja Grande
+* Consumidor Caja Pequeña
+* Productor Caja Grande
+* Productore Caja Pequeña
+
+![ClasesProblema1](https://i.ibb.co/Rp4QSff/imagen-2021-10-25-005619.png)
+
+Para ejemplificar el flujo que llevan los hilos en dicha solución se puede visualizar en el siguiente diagrama de flujo:
+
+![FlujoProblema1](https://i.ibb.co/D1NSk1F/imagen-2021-10-26-205859.png)
+
+![Flujo2Problema1](https://i.ibb.co/fkLfkcw/imagen-2021-10-26-210024.png)
+
+Podemos ver el proceso que se maneja en cada hilo. Ahora para poder sincronizar los diferentes hilos que componen nuestra solución, en nuestra clase lista_cajas, el cuál maneja toda la lógica de la aplicación tiene los siguientes atributos:
+
+```java
+    ReentrantLock lock = new ReentrantLock();
+    Condition notFull = lock.newCondition();
+    Condition notEmpty = lock.newCondition();
+```
+
+Que nos sirve para bloquear los espacios, ya que son los atributos que se comparten entre los hilos.
+
+Para agregar una caja a la estantería se utiliza el siguiente método:
+
+```java
+    try{
+            this.lock.lock();
+            while(this.lista.size() == maxSize){
+                this.notFull.await();
+            }
+            i = this.lista.size() + 1;
+            this.lista.add(i);
+            this.notEmpty.signalAll();
+        }catch(Exception e){
+            
+        }finally{
+            this.lock.unlock();
+            pintar();
+            this.cant_peques_prod++;
+            this.lbl_peques_colocadas.setText(String.valueOf(this.cant_peques_prod));
+            this.espacios_ocupados++;
+            this.lbl_espacios.setText(String.valueOf(this.espacios_ocupados));
+            return i;
+        }      
+```
+
+Donde podemos ver la parte más importante que hace un lock para poder agregar la caja a la estantería, y así evitar el error mencionado anteriormente, para realizar la extracción es un método parecido, solo que en lugar de agregar, elimina de la lista.
+
+```java
+    try{
+            this.lock.lock();
+            while(this.lista.size() == 0){
+                this.notEmpty.await();
+            }
+            i = this.lista.removeLast();
+            this.notFull.signalAll();
+            
+        }catch(Exception e){
+            
+        }finally{
+            this.lock.unlock();
+            pintar();
+            this.cant_peques_cons++;
+            this.lbl_peques_retiradas.setText(String.valueOf(this.cant_peques_cons));
+            this.espacios_ocupados--;
+            this.lbl_espacios.setText(String.valueOf(this.espacios_ocupados));
+            return i;
+        } 
+```
+
 ### **Problema 2**
 
+El barbero es un *recurso compartido*, ya que es la persona que atiende a los clientes. Y como los clientes pueden ir llegando de forma aleatoria con el mismo objetivo, dando como resultado una condición de carrera.
+
+*Condición de carrera*, se puede presentar cuando muchos clientes quieren ser atendidos por el barbero, cuando el barbero solo puede atender un cliente a la vez.
+
+Debemos realizar la *exclusión mutua* que surge con el barbero cuando los clientes llegan por un corte de cabello.
+
+Para poder solucionar los problemas mencionados, podemos utilizar estados, banderas o variables. Un estado que simboliza la silla del barbero (libre, ocupado), un contador para la cantidad de clientes en la sala de espera, un estado para simbolizar las sillas de espera (libre, ocupado), también necesitamos de un contador de sillas libres en el área de espera, podemos detectar que la solución se divide en dos clases, los clientes y el barbero, con sus respectivas funciones. La función *syncronized()* nos ayudará a bloquear la lista de clientes actuales en la barbería para que no pueda ser accedida por otro hilo hasta que termine el proceso, y así evitar la condición de carrera.
+
+El orden para que el barbero pueda realizar su trabajo es el siguiente: 
+
+* Esperar un hilo cliente para poder despertar y trabajar
+* Extrae a un cliente de la sala de espera aumentando la cantidad de sillas disponibles en la sala y cambiando de estado a ocupado.
+* Desbloquear aacceso a las sillas libres.
+* Corta el cabello del cliente y vuelve a revisar la sala de espera, si hay un cliente se duerme y sino realizar lo mismo del paso dos.
+
+El orden para que los clientes sean atendidos por el barbero es el siguiente:
+
+* Esperar a que el número de sillas libres sea mayor a 0
+* Si hay sillas libres, toma asiento y si es el único cliente despierta al barbero, sino espera su turno.
+* Si no hay sillas libres, desbloquear el acceso a la cantidad de sillas libres.
+
+Las relaciones entre las clases que se proponen para dar solución al problema se describen en el siguiente diagrama:
+
+![ClasesProblema2](https://i.ibb.co/02X2JH8/imagen-2021-10-25-000912.png)
+
+Sabemos que el barbero estará chequeando la creación de algún hilo cliente para poder empezar a trabajar, realizando el metodo cortar_cabello, sino ejecuta el método dormir para cambiar su estado. 
+
+Ahora para ejemplificar de mejor manera el flujo de los hilos se muestra el siguiente diagrama:
+
+![FlujoProblema2](https://i.ibb.co/XzpTvMb/imagen-2021-10-25-002246.png)
+
+![Flujo2Problema2](https://i.ibb.co/b706d5J/imagen-2021-10-25-002619.png)
+
+Podemos ver el proceso que manejaría cada hilo para poder dar solución al problema.
+
 ### **Problema 3**
+
+Los *hilos* que se detectaron para poder desarrollar el problema fueron los siguientes: hilo para manejar el tiempo, hilo para los jugadores, el hilo de cada disparo y por ultimo el hilo de cada enemigo. En el siguiente diagrama de clases podemos ver las clases generadas para la implementación. 
+
+![ClasesProblema3](https://i.ibb.co/gVw2kr7/imagen-2021-10-26-235506.png)
+
+En el diagram podemos ver como todas las clases son abstracciones hacia la clase listaEnemigo que es la controladora de la lógica del juego.
+
+Como *recursos compartidos* Los enemigos ya que ambos usuarios pueden disparar al mismo enemigo y también el tiempo es un recurso compartido por todos los hilos de la aplicación.
+
+A continuación vemos el diagrama de flujo de los diferentes sucesos del juego:
+
+![FlujoProblema3](https://i.ibb.co/9V32NH7/imagen-2021-10-27-002223.png)
+
+![Flujo2Problema3](https://i.ibb.co/wc6qqpW/imagen-2021-10-27-002427.png)
+
+![Flujo3Problema3](https://i.ibb.co/9NKncmM/imagen-2021-10-27-005423.png)
+
+![Flujo4Problema3](https://i.ibb.co/TBfqXSP/imagen-2021-10-27-004334.png)
+
+Los problemas que se pueden presentar a la hora de utilizar hilos son los siguientes, la *inconsistencia de los datos* cuando no se sincronizan de forma correcta todos los hilos de nuestra aplicación modificando algún valor en un tiempo incorrecto. También entre los errores se puede llegar a presentar una *condición de carrera* como el del barbero esta vez en la generación de enemigos y la de balas. Para poder solucionar dichos problemas y también realizar la sincronización de todo el sistema se utilizaron los siguientes metodos:
+
+```java
+    public void generarEnemigos() throws InterruptedException{    
+        this.posY+=10;
+        this.lbl_enemigo.setLocation(this.posX,this.posY);
+        this.panel.repaint();
+        validarVidas();
+        Thread.sleep(400);
+    }
+```
+
+El código anterior nos sirve para poder generar un enemigo en una posición aleatoria para poder después dormir dicho hilo y generar un nuevo enemigo. 
+
+```java
+    public void generarBalitas() throws InterruptedException{
+        this.posY-=10;
+        this.lbl_bala.setLocation(this.posX,this.posY);
+        this.panel.repaint();
+        colision();
+        Thread.sleep(300);
+    }
+```
+
+Para generar balas es igual el código que se utiliza donde se genera la imagen de la bala y se duerme el hilo.
+
+
 
 ---
 
@@ -185,15 +345,23 @@ decir no pueden colisionar y se restringen entre ellas el área en la cual puede
 
 ### **Problema 1**
 
+![InterfazProblema1](https://i.ibb.co/SnrjphQ/imagen-2021-10-26-211547.png)
+
+La aplicación es bastante intuitiva, en la imágen anterior podemos observar la estantería representada por una barra café, y las cafas que van llegando, se dibuja una caja cuando es pequeña y dos cuando es grande.
+
+El enunciado nos dice que se van creando los hilos de ambos tipos, consumidores y productores, y si no encuentran la acción a realizar, deben esperar hasta tener una caja o espacio disponible.
+
+En la parte inferior tenemos un HUD donde nos muestra como ha estado reaccionando nuestra aplicación, mostrando el total de cajas colocadas y extraídas, de ambos tamaños. También tenemos el botón de pausar y reanudar la ejecución del programa.
+
+En la parte derecha de la aplicación tenemos un formulario donde podemos cambiar el valor de las variables, con un botón de modificar, para cambiar la frecuencia en que se producen los hilos.
+
 ### **Problema 3**
 
----
+![InterfazProblema3](https://i.ibb.co/j4TmfDn/imagen-2021-10-27-014036.png)
 
-## **Código**
+El juego space invaders es muy entretenido, al igual que es muy sencillo el manejo de las naves, siendo ASD para controlar al jugador de la izquierda y JKL para el jugador de la derecha, A y J para mover al jugador a la izquierda, D y L para mover al jugador a la derecha y por último K y S para dispararle a los enemigos, la mecánica del juego es destruir todas las naves y no permitir que choquen contigo o que lleguen al suelo. 
 
-### **Problema 1**
-
-### **Problema 3**
+Para poder pausar el juego puedes presionar la tecla p y para reanudar la tecla r, el juego termina cuando pierden 3 vidas.
 
 --- 
 
