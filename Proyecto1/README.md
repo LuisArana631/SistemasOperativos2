@@ -170,7 +170,63 @@ Para ejemplificar el flujo que llevan los hilos en dicha solución se puede visu
 
 ![Flujo2Problema1](https://i.ibb.co/fkLfkcw/imagen-2021-10-26-210024.png)
 
-Podemos ver el proceso que se maneja en cada hilo. Ahora para poder sincronizar los diferentes hilos que componen nuestra solución
+Podemos ver el proceso que se maneja en cada hilo. Ahora para poder sincronizar los diferentes hilos que componen nuestra solución, en nuestra clase lista_cajas, el cuál maneja toda la lógica de la aplicación tiene los siguientes atributos:
+
+```java
+    ReentrantLock lock = new ReentrantLock();
+    Condition notFull = lock.newCondition();
+    Condition notEmpty = lock.newCondition();
+```
+
+Que nos sirve para bloquear los espacios, ya que son los atributos que se comparten entre los hilos.
+
+Para agregar una caja a la estantería se utiliza el siguiente método:
+
+```java
+    try{
+            this.lock.lock();
+            while(this.lista.size() == maxSize){
+                this.notFull.await();
+            }
+            i = this.lista.size() + 1;
+            this.lista.add(i);
+            this.notEmpty.signalAll();
+        }catch(Exception e){
+            
+        }finally{
+            this.lock.unlock();
+            pintar();
+            this.cant_peques_prod++;
+            this.lbl_peques_colocadas.setText(String.valueOf(this.cant_peques_prod));
+            this.espacios_ocupados++;
+            this.lbl_espacios.setText(String.valueOf(this.espacios_ocupados));
+            return i;
+        }      
+```
+
+Donde podemos ver la parte más importante que hace un lock para poder agregar la caja a la estantería, y así evitar el error mencionado anteriormente, para realizar la extracción es un método parecido, solo que en lugar de agregar, elimina de la lista.
+
+```java
+    try{
+            this.lock.lock();
+            while(this.lista.size() == 0){
+                this.notEmpty.await();
+            }
+            i = this.lista.removeLast();
+            this.notFull.signalAll();
+            
+        }catch(Exception e){
+            
+        }finally{
+            this.lock.unlock();
+            pintar();
+            this.cant_peques_cons++;
+            this.lbl_peques_retiradas.setText(String.valueOf(this.cant_peques_cons));
+            this.espacios_ocupados--;
+            this.lbl_espacios.setText(String.valueOf(this.espacios_ocupados));
+            return i;
+        } 
+```
 
 ### **Problema 2**
 
@@ -219,7 +275,15 @@ Podemos ver el proceso que manejaría cada hilo para poder dar solución al prob
 
 ### **Problema 1**
 
+![InterfazProblema1](https://i.ibb.co/SnrjphQ/imagen-2021-10-26-211547.png)
 
+La aplicación es bastante intuitiva, en la imágen anterior podemos observar la estantería representada por una barra café, y las cafas que van llegando, se dibuja una caja cuando es pequeña y dos cuando es grande.
+
+El enunciado nos dice que se van creando los hilos de ambos tipos, consumidores y productores, y si no encuentran la acción a realizar, deben esperar hasta tener una caja o espacio disponible.
+
+En la parte inferior tenemos un HUD donde nos muestra como ha estado reaccionando nuestra aplicación, mostrando el total de cajas colocadas y extraídas, de ambos tamaños. También tenemos el botón de pausar y reanudar la ejecución del programa.
+
+En la parte derecha de la aplicación tenemos un formulario donde podemos cambiar el valor de las variables, con un botón de modificar, para cambiar la frecuencia en que se producen los hilos.
 
 ### **Problema 3**
 
