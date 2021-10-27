@@ -337,8 +337,6 @@ El código anterior nos sirve para poder generar un enemigo en una posición ale
 
 Para generar balas es igual el código que se utiliza donde se genera la imagen de la bala y se duerme el hilo.
 
-
-
 ---
 
 ## **¿Cómo utilizar cada aplicación?**
@@ -362,6 +360,35 @@ En la parte derecha de la aplicación tenemos un formulario donde podemos cambia
 El juego space invaders es muy entretenido, al igual que es muy sencillo el manejo de las naves, siendo ASD para controlar al jugador de la izquierda y JKL para el jugador de la derecha, A y J para mover al jugador a la izquierda, D y L para mover al jugador a la derecha y por último K y S para dispararle a los enemigos, la mecánica del juego es destruir todas las naves y no permitir que choquen contigo o que lleguen al suelo. 
 
 Para poder pausar el juego puedes presionar la tecla p y para reanudar la tecla r, el juego termina cuando pierden 3 vidas.
+
+---
+
+## **Código**
+
+### **Problema 3**
+
+```java
+    @Override
+    public void run(){
+        try{
+            while(!interfaz.pausa){
+                enemigos e=new enemigos(this.panel,lista,this.lbl_nave1,this.lbl_nave2);
+                e.start();
+                lista.add(e);
+                int vel=tiempo.validarTiempo();
+                if(vel != 0){
+                    Thread.sleep(vel);
+                }
+                Thread.sleep(1000);
+            }
+            
+        }catch(InterruptedException ex){
+            ex.printStackTrace();
+        }
+    }
+```
+
+Código para ejecutar las funcionalidades del juego Space Invaders.
 
 --- 
 
