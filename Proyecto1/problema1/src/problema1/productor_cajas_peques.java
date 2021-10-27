@@ -5,6 +5,8 @@
  */
 package problema1;
 
+import java.util.Random;
+
 /**
  *
  * @author Dianita
@@ -27,7 +29,8 @@ public class productor_cajas_peques extends Thread{
     }
     
     public void producir() throws InterruptedException{
-        Thread.sleep(this.velocidad);
+        int random=new Random().nextInt(this.velocidad);
+        Thread.sleep(random);
         int i = lista_cajas.add();
     }
     

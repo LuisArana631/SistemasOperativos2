@@ -459,25 +459,25 @@ public class interfaz extends javax.swing.JFrame {
         if(llegadas_cons_cajas_grandes != 0){
             consumidor2.setVelocidad(llegadas_cons_cajas_grandes);
         }else{
-            consumidor2.setVelocidad(5000);
+            consumidor2.setVelocidad(1000);
         }
         
         if(llegadas_cons_cajas_peques != 0){
-            consumidor2.setVelocidad(llegadas_cons_cajas_peques);
+            consumidor.setVelocidad(llegadas_cons_cajas_peques);
         }else{
-            consumidor2.setVelocidad(10000);
+            consumidor.setVelocidad(1000);
         }
         
         if(llegadas_prod_cajas_peques != 0){
-            consumidor2.setVelocidad(llegadas_prod_cajas_peques);
+            productor_cajas_peques.setVelocidad(llegadas_prod_cajas_peques);
         }else{
-            consumidor2.setVelocidad(2000);
+            productor_cajas_peques.setVelocidad(2000);
         }
         
         if(llegadas_prod_cajas_grandes != 0){
-            consumidor2.setVelocidad(llegadas_prod_cajas_grandes);
+            productor_cajas_grandes.setVelocidad(llegadas_prod_cajas_grandes);
         }else{
-            consumidor2.setVelocidad(2000);
+            productor_cajas_grandes.setVelocidad(2000);
         }
         
         
