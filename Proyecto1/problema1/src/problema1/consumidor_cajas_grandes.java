@@ -5,13 +5,15 @@
  */
 package problema1;
 
+import java.util.Random;
+
 /**
  *
  * @author Dianita
  */
 public class consumidor_cajas_grandes extends Thread {
     public lista_cajas lista_cajas;
-    public int velocidad = 5000;
+    public int velocidad = 1000;
 
     public int getVelocidad() {
         return velocidad;
@@ -26,7 +28,8 @@ public class consumidor_cajas_grandes extends Thread {
     }
     
     public void consumir() throws InterruptedException{
-        Thread.sleep(this.velocidad);
+        int random=new Random().nextInt(this.velocidad);
+        Thread.sleep(random);
         int i = lista_cajas.getTwo();
     }
     
