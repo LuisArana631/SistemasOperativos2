@@ -1,0 +1,14 @@
+.table-view h4{
+    text-align: center;
+}
+.btnSubmit-2{
+    width: 25%;
+    border-radius: 1rem;
+    border: none;
+    cursor: pointer;
+}
+.table-view{
+    border-radius: 5px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+    padding: 5%;
+}
