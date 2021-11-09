@@ -1,0 +1,23 @@
+.add-form h4{
+    text-align: center;
+    color: #fff;
+}
+.bg-green{
+    background: rgb(44, 78, 37);
+    color: #fff;
+}
+.bg-green-2{
+    background: rgb(69, 122, 60);
+}
+.add-form{
+    border-radius: 5px;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+    padding: 5%;
+}
+.btnSubmit{
+    width: 50%;
+    border-radius: 1rem;
+    padding: 1.5%;
+    border: none;
+    cursor: pointer;
+}
