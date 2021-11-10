@@ -119,3 +119,11 @@ Los comandos necesarios para levantar nuestra aplicación en Kubernetes son los 
     ```$ kubectl apply -f service.yml```
 
 * Y listo ya hemos levantado nuestro backend en kubernetes
+
+* Para cambiar imágen de nuestro backend lo único que debemos hacer es ejecutar el siguiente comando:
+
+    ```$ kubectl set image deployment/backend backend=[nueva imagen]```
+
+* Para regresar a una versión anterior de nuestro backend utilizamos el siguiente comando:
+
+    ```$ kubectl rollout undo deployment/backend```

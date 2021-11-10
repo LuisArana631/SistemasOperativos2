@@ -74,12 +74,18 @@ Para crear un *namespace* en nuestro cluster de Kubernetes utilizamos el comando
     $ kubectl create namespace [name]
 ```
 
+Para desplegar el replica set de nuestro cluster de Kubernetes ejecutamos:
+
+```
+    $ kubectl get rs
+```
 
 ---
 
 ## **Enlaces de herramientas utilizadas**
 
 - [React](https://es.reactjs.org/)
+- [Kubernetes](https://kubernetes.io/es/docs/concepts/workloads/controllers/deployment/)
 
 ---
 

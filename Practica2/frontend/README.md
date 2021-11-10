@@ -137,6 +137,18 @@ Los comandos necesarios para levantar nuestra aplicación en Kubernetes son los 
 
 * Y listo ya hemos levantado nuestro frontend en kubernetes
 
+* Para cambiar imágen de nuestro frontend lo único que debemos hacer es ejecutar el siguiente comando:
+
+    ```$ kubectl set image deployment/frontend frontend=[nueva imagen]```
+
+* Para regresar a una versión anterior de nuestro frontend utilizamos el siguiente comando:
+
+    ```$ kubectl rollout undo deployment/frontend```
+
+* Para eliminar un deployment se utiliza el siguiente comando:
+
+    ``````
+
 ---
 
 ## **Getting Started with Create React App**
