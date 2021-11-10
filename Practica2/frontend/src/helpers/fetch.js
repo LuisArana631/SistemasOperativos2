@@ -1,5 +1,5 @@
 const fetchManage = ( endpoint, body, method = 'GET' ) => {
-    const url = 'http://localhost:3800/' + endpoint;
+    const url = 'http://34.133.206.223:80/' + endpoint;
 
     if ( method === 'GET' ) {
         return fetch( url );
