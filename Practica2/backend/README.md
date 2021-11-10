@@ -127,3 +127,11 @@ Los comandos necesarios para levantar nuestra aplicación en Kubernetes son los 
 * Para regresar a una versión anterior de nuestro backend utilizamos el siguiente comando:
 
     ```$ kubectl rollout undo deployment/backend```
+
+* Para eliminar un deployment se utiliza el siguiente comando:
+
+    ```$ kubectl delete deployment backend```
+
+* Para eliminar un service se utiliza el siguiente comando:
+
+    ```$ kubectl delete service backend-lb```

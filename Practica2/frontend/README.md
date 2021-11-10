@@ -147,7 +147,11 @@ Los comandos necesarios para levantar nuestra aplicación en Kubernetes son los 
 
 * Para eliminar un deployment se utiliza el siguiente comando:
 
-    ``````
+    ```$ kubectl delete deployment frontend```
+
+* Para eliminar un service se utiliza el siguiente comando:
+
+    ```$ kubectl delete service frontend-lb```
 
 ---
 
