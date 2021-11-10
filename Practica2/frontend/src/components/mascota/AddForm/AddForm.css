@@ -3,11 +3,11 @@
     color: #fff;
 }
 .bg-green{
-    background: rgb(44, 78, 37);
-    color: #fff;
+    background: rgb(116, 87, 33);
+    color: rgb(255, 255, 255);
 }
 .bg-green-2{
-    background: rgb(69, 122, 60);
+    background: rgb(28, 22, 82);
 }
 .add-form{
     border-radius: 5px;
@@ -20,4 +20,5 @@
     padding: 1.5%;
     border: none;
     cursor: pointer;
+    background: rgb(116, 87, 33)
 }
