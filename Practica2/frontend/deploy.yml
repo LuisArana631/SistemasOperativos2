@@ -20,6 +20,6 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: dianmz22/frontend
+        image: dianmz22/frontend:v0
         ports:
         - containerPort: 80
