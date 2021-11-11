@@ -4,7 +4,6 @@ metadata:
   name: nodeexporter-service
   namespace: default
 spec:
-  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 80
