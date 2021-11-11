@@ -84,7 +84,7 @@ Nuestro archivo ```deploy.yml``` sirve para levantar nuestros pods del frontend,
             spec:
                 containers:
                 - name: frontend
-                    image: dianmz22/frontend
+                    image: dianmz22/frontend:[version]
                     ports:
                     - containerPort: 80
 ```
