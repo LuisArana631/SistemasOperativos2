@@ -1,0 +1,14 @@
+FROM node:14 as build
+WORKDIR /usr/local/app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 3800
+CMD [ "node", "index.js" ]
+
+
+# FROM nginx:latest
+# WORKDIR /usr/share/nginx/html
+# COPY --from=build /usr/local/app .
+# COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+# EXPOSE 80

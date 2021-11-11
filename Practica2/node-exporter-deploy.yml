@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodeexporter
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: nodeexporter
+  template:
+    metadata:
+      labels:
+        role: nodeexporter
+    spec:
+      containers:
+      - name: nodeexporter
+        image: prom/node-exporter
+        ports:
+        - containerPort: 9090
