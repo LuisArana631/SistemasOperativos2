@@ -29,6 +29,7 @@ los recursos que consume nuestra aplicación.
 > * [Despliegue Frontend](#Despliegue-Frontend)
 > * [Despliegue Backend](#Despliegue-Backend)
 > * [Enlaces de herramientas utilizadas](#Enlaces-de-herramientas-utilizadas)
+> * [Monitoreo con prometheus y grafana](#Monitoreo-con-prometheus-y-grafana)
 > * [Comandos generales utilizados en Kubernetes](#Comandos-generales-utilizados-en-Kubernetes)
 > * [Integrantes Grupo 4](#Integrantes-Grupo-4)
 
@@ -36,9 +37,13 @@ los recursos que consume nuestra aplicación.
 
 ## **Despliegue Frontend**
 
+Para conocer más información sobre el despliegue del [frontend](https://github.com/LuisArana631/SistemasOperativos2/tree/master/Practica2/frontend) dirigete a la carpeta.
+
 ---
 
 ## **Despliegue Backend**
+
+Para conocer más información sobre el despliegue del [backend](https://github.com/LuisArana631/SistemasOperativos2/tree/master/Practica2/backend) dirigete a la carpeta.
 
 ---
 
@@ -79,6 +84,11 @@ Para desplegar el replica set de nuestro cluster de Kubernetes ejecutamos:
 ```
     $ kubectl get rs
 ```
+---
+
+## **Monitoreo con prometheus y grafana**
+
+
 
 ---
 
